@@ -16,6 +16,13 @@ module.exports = function(app, Member) {
       res.json({result: 1});
     });
   });
+  app.get('/api/members/', function(req, res){
+    Member.find({}, function(err, members){
+      if(err) return res.status(500).json({error:err});
+      if(members.length===0) return res.status(404).json({error:'member not found'});
+      res.json(members);
+    });
+  });
 }
   //
   // // 게시판 _id 값으로 전공별 게시판 조회
