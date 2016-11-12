@@ -16,7 +16,7 @@ db.once('open', function(){
 mongoose.connect('mongodb://localhost:27017/hcDB');
 
 //Define model
-var Member = require('./models/membler');
+var Member = require('./models/member');
 
 
 var port = process.env.PORT || 3000;
