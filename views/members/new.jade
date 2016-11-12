@@ -5,8 +5,14 @@ block content
 		#{title}
 	form#formAddBlob(name="addMember",method="post",action="/members")
 		p Nickname:
-			input#inputNickname(type="text", placeholder="ex. adfasdf", name="name")
-		p DOB: 
-			input#inputDob(type="date", name="dob")
+			input#inputNickname(type="text", placeholder="ex. abcd1234", name="nickname")
+		p Password:
+			input#inputPassword(type="password", name="password")
+		p major:
+			input#inputMajor(type="text", name="major")
 		p
 			button#btnSubmit(type="submit") submit
+
+
+
+

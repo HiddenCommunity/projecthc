@@ -3,19 +3,21 @@ var Schema = mongoose.Schema;
 
 var boardSchema = new Schema({
     category: String,
-    writer: {type: Schema.Types.ObjectId, ref:'Member'},
+    author: String,
     title: String,
-    content: String,
-    write_date: { type: Date, default: Date.now },
-    hit: 0,
-    like: 0,
-    hate: 0,
-    comments: [{writer: String,
-                content: String,
-                write_date: { type: Date, default: Date.now },
-                hit:0,
-                like:0,
-                hate:0
+    body: String,
+    date: { type: Date, default: Date.now },
+    meta: {
+        hit: Number,
+        like: Number,
+        hate: Number
+    },
+    comments: [{
+        author: String,
+        body: String,
+        date: Date,
+        like: Number,
+        hate: Number
     }]
 });
 

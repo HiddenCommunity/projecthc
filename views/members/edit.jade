@@ -2,12 +2,12 @@ extends ../layout
 
 block content
 	h1.
-		Blob ID #{blob._id}
-	form(action='/blobs/#{blob._id}/edit',method='post',name='updateblob',enctype='application/x-www-form-urlencoded')
-		p Name:
-			input#inputName(type='text', value='#{blob.name}', name='name')
+		Member ID #{member._id}
+	form(action='/members/#{member._id}/edit',method='post',name='updateMember',enctype='application/x-www-form-urlencoded')
+		p Nickname:
+			input#inputNickname(type='text', value='#{member.name}', name='name')
 		p Badge:
-			input#inputBadge(type='number', value='#{blob.badge}', name='badge')
+			input#inputBadge(type='number', value='#{member.badge}', name='badge')
 		p DOB:
 			input#inputDob(type='date', value='#{blobdob}', name='dob')
 		p Are you Loved?:

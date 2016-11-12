@@ -3,21 +3,22 @@ var Schema = mongoose.Schema;
 
 var boardSchema = new Schema({
     category: String,
-    writer: String,
+    author: String,
     title: String,
-    content: String,
-    write_date: { type: Date, default: Date.now },
-    hit: Number,
-    like: Number,
-    hate: Number,
-    comments: [{writer: String,
-                content: String,
-                write_date: { type: Date, default: Date.now },
-                hit:Number,
-                like:Number,
-                hate:Number
+    body: String,
+    date: { type: Date, default: Date.now },
+    meta: {
+        hit: Number,
+        like: Number,
+        hate: Number
+    },
+    comments: [{
+        author: String,
+        body: String,
+        date: Date,
+        like: Number,
+        hate: Number
     }]
 });
 
-//모듈화
 module.exports = mongoose.model('board', boardSchema);

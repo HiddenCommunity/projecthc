@@ -6,7 +6,7 @@ var memberSchema = new Schema({
     connectKey: String,
     majors: [{category: String}],
     join_date: { type: Date, default: Date.now },
-    last_login_date: { type: Date }
+    last_login_date: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('member', memberSchema);
+module.exports = mongoose.model('Member', memberSchema);
