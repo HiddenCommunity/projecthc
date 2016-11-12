@@ -4,11 +4,10 @@ var express = require('express'),
     bodyParser = require('body-parser'), //parses information from POST
     methodOverride = require('method-override'),  //used to manipulate POST
     nodemailer = require('nodemailer'),
-    smtpTransport = require('nodemailer-smtp-transport'),
-    Member = mongoose.model('member');
+    smtpTransport = require('nodemailer-smtp-transport');
 
 var smtpTransport = nodemailer.createTransport(smtpTransport({
-    host : "YOUR SMTP SERVER ADDRESS",
+    host : "52.78.207.133",
     secureConnection : false,
     port: 587,
     auth : {
@@ -34,7 +33,7 @@ router.route('/')
 //GET all members
     .get(function(req, res, next) {
         //retrieve all members from Mongo
-        Member.find({}, function (err, members) {
+        mongoose.model('member').find({}, function (err, members) {
             if (err) {
                 return console.error(err);
             } else {
@@ -62,7 +61,7 @@ router.route('/')
         var join_date = Date.now();
 
         //call the create function for our database
-        Member.create({
+        mongoose.model('member').create({
             nickname : nickname,
             join_date : join_date
         }, function (err, member) {
@@ -98,7 +97,7 @@ router.route('/')
   router.param('id', function(req, res, next, id) {
      console.log('validating ' + id + ' exists');
      //find the ID in the Database
-     Member.findById(id, function (err, member) {
+      mongoose.model('member').findById(id, function (err, member) {
          //해당하는 id가 없을 때,
          if (err) {
              console.log(id + ' was not found');
@@ -126,7 +125,7 @@ router.route('/')
 
   router.route('/:id')
      .get(function(req, res) {
-         Member.findById(req.id, function (err, member) {
+         mongoose.model('member').findById(req.id, function (err, member) {
              if (err) {
                  console.log('GET Error: There was a problem retrieving: ' + err);
              } else {
@@ -159,7 +158,7 @@ router.route('/')
  //GET Mongo ID로 member 1명 찾음
     .get(function(req, res) {
          //search for the member within Mongo
-         Member.findById(req.id, function (err, member) {
+        mongoose.model('member').findById(req.id, function (err, member) {
              if (err) {
                  console.log('GET Error: There was a problem retrieving: ' + err);
              } else {
@@ -194,7 +193,7 @@ router.route('/')
          //var majors = req.body.majors;
 
          //find the document by ID
-         Member.findById(req.id, function (err, member) {
+        mongoose.model('member').findById(req.id, function (err, member) {
              //update it
              member.update({
                  nickname : nickname
