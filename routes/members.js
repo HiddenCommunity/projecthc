@@ -37,6 +37,7 @@ router.route('/')
                 //JSON response will show all members in JSON format
                 //    json: function(){
                 res.json(members);
+                //}
             }
         });
     }
