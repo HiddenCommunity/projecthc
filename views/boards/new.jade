@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+	h1.
+		#{title}
+	form#formAddBlob(name="createBoard",method="post",action="/boards")
+		p Category:
+			input#inputNickname(type="text", name="category")
+		p Writer:
+			input#inputWriter(type="text", name="writer")
+		p Title :
+			input#inputTitle(type="text", name="title")
+		p Content :
+			input#inputContent(type="text", name="content")
+		p
+			button#btnSubmit(type="submit") submit
+

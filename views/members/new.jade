@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+	h1.
+		#{title}
+	form#formAddBlob(name="addMember",method="post",action="/members")
+		p Nickname:
+			input#inputNickname(type="text", placeholder="ex. adfasdf", name="name")
+		p DOB: 
+			input#inputDob(type="date", name="dob")
+		p
+			button#btnSubmit(type="submit") submit
