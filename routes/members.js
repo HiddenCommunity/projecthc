@@ -2,19 +2,7 @@ var express = require('express'),
     router = express.Router(),  //Create new router object
     mongoose = require('mongoose'), // mongo connection
     bodyParser = require('body-parser'), //parses information from POST
-    methodOverride = require('method-override'),  //used to manipulate POST
-    nodemailer = require('nodemailer'),
-    smtpTransport = require('nodemailer-smtp-transport');
-
-var smtpTransport = nodemailer.createTransport(smtpTransport({
-    host : "52.78.207.133",
-    secureConnection : false,
-    port: 587,
-    auth : {
-        user: "carsilverstar@gmail.com",
-        pass: "a298870a"
-    }
-}));
+    methodOverride = require('method-override');  //used to manipulate POST
 
 //Any requests to this controller must pass through this 'use' function
 //Copy and pasted from method-override
@@ -26,7 +14,7 @@ router.use(methodOverride(function(req, res){
         delete req.body._method
         return method
     }
-}))
+}));
 
 //build the REST operations at the base for members
 router.route('/')
@@ -38,22 +26,20 @@ router.route('/')
                 return console.error(err);
             } else {
                 //respond to both HTML and JSON. JSON responses require 'Accept: application/json;' in the Request Header
-                res.format({
-                    //HTML response will render the index.jade file in the views/members folder. We are also setting "members" to be an accessible variable in our jade view
-                    html: function(){
-                        res.render('members/index', {
-                            title: 'All my members',
-                            "member" : members
-                        });
-                    },
-                    //JSON response will show all members in JSON format
-                    json: function(){
-                        res.json(members);
-                    }
-                });
+                //res.format({
+                //HTML response will render the index.jade file in the views/members folder. We are also setting "members" to be an accessible variable in our jade view
+                //html: function(){
+                //res.render('members/index', {
+                //    title: 'All my members',
+                //   "member" : members
+                //    });
+                //   },
+                //JSON response will show all members in JSON format
+                //    json: function(){
+                res.json(members);
             }
         });
-    })
+    }
 
     //POST 회원 추가 (회원가입 form 에서 데이터가 넘어옴)
     .post(function(req, res) {
@@ -85,8 +71,8 @@ router.route('/')
                 });
             }
         })
-    });
-
+    })
+    )
     // 회원가입 페이지
     router.get('/new', function(req, res) {
         //렌더링할 라우트. /new 요청을 하면, view/members/new.jade 파일이 HTML형식으로 렌더링된다.
@@ -203,7 +189,7 @@ router.route('/')
                  }
                  else {
                     //성공했다는 것을 알려주는 페이지
-                     res.format({
+                     res.json({
                          html: function(){
                              res.redirect("/members/" + member._id);
                          },
@@ -216,65 +202,5 @@ router.route('/')
              })
          });
      });
-
-     // //DELETE a member by ID
-     // .delete(function (req, res){
-     //     //find member by ID
-     //     mongoose.model('Member').findById(req.id, function (err, member) {
-     //         if (err) {
-     //             return console.error(err);
-     //         } else {
-     //             //remove it from Mongo
-     //             member.remove(function (err, member) {
-     //                 if (err) {
-     //                     return console.error(err);
-     //                 } else {
-     //                     //Returning success messages saying it was deleted
-     //                     console.log('DELETE removing ID: ' + member._id);
-     //                     res.format({
-     //                         //HTML returns us back to the main page, or you can create a success page
-     //                         html: function(){
-     //                             res.redirect("/members");
-     //                         },
-     //                         //JSON returns the item with the message that is has been deleted
-     //                         json: function(){
-     //                             res.json({message : 'deleted',
-     //                                 item : member
-     //                             });
-     //                         }
-     //                     });
-     //                 }
-     //             });
-     //         }
-     //     });
-     // });
-     //
-
-router.post('/send',function(req,res){
-  var mailOptions={
-    from : "Hidden Community",
-    to : req.body.email,
-    subject : "Hidden Community 가입 인증 메일입니다.",
-    text : "가입을 환영합니다. 하단의 인증버튼을 눌러주세요.",
-    html : "HTML GENERATED",
-    attachments : [
-      {   // file on disk as an attachment
-        filename: 'text3.txt',
-        path: 'Your File path' // stream this file
-      }
-    ]
-  }
-  console.log(mailOptions);
-  smtpTransport.sendMail(mailOptions, function(error, response){
-      if(error){
-          console.log(error);
-          res.end("error");
-      }else{
-          console.log(response.response.toString());
-          console.log("Message sent: " + response.message);
-          res.end("sent");
-      }
-    });
-});
 
 module.exports = router;
