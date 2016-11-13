@@ -6,10 +6,10 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     app = express(), //express application
     db = require('./model/db'),  //db 파일을 변수로 추가한다.
-    member = require('./model/member'),
+    members = require('./model/member'),
     boards = require('./model/board'),
     routes = require('./routes/index');
-//    members = require('./routes/members');
+/// members = require('./routes/members');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));  //view 템플릿이 있는 디렉토리
@@ -25,8 +25,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //middleware 함수 호출
 app.use('/', routes);
-//app.use('/members', members);
-//app.use('/boards', boards);
+app.use('/members', members);
+app.use('/boards', boards);
 
 // catch 404 and forward to error handler
 // 마운트 경로가 없는 미들웨어함수. 앱이 요청을 받을 때마다 실행된다.
