@@ -483,20 +483,39 @@ router.route('/send/user/validate')
             }
             console.log(member);
             res.json({response : "ok"});
-           // next();
           }
         });
       });
 
-
+//test:post
 //안드로이드에서 아이디, 패스워드 입력.
 router.route('/send/user/info')
-    .get(function (req,res){
-      var user_id = req.param('id');
-      var user_password = req.param('password');
-      console.log(user_id + " " + user_password);
-      res.end('{response:"ok"}');
+    .post(function (req,res){
+      var email = req.param('email');
+      var password = req.param('password');
+      var nickname = req.param('nickname');
+      var major1 = req.param('major1');
+      var major2 = req.param('major2');
+      var major3 = req.param('major3');
+      //이메일을 찾아서
+      mongoose.model('Member').findOne({'email': email }, function (err, member) {
+        //update it
+        member.update({
+          nickname : nickname,
+          password : password,
+          major1 : major1,
+          major2 : major2,
+          major3 : major3
+        }, function (err, member) {
+          if (err) {
+            res.send("[실패] db에 update 실패 !: " + err);
+          }
+          else {
+            //성공했다는 것을 알려주는 페이지
+            res.json({response : "ok"});
+          }
+        });
+      })
     });
-    
 
 module.exports = router;
