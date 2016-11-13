@@ -434,4 +434,32 @@ router.route('/send/email/:email')
 
     });
 
+
+//이메일 인증메일에서 버튼클릭하면 이쪽으로 온다.
+router.route('/send/email/confirm')
+    .get(function(req,res){
+        var email = req.param('email');
+        //디비에 인증된 이메일 등록
+
+        //등록 되었으면 인증 화면을 띄워준다.
+        res.end('<h1>HiddenCommunity 인증완료</h1><p><img src="https://i1.wp.com/nodemailer.com/wp-content/uploads/2015/10/n2-2.png?w=422&ssl=1"/></p>');
+    });
+
+router.route('send/email/validate')
+    .get(function(req,res) {
+      var email = req.param('email');
+      //디비에 이메일이 인증되어있나 체크.
+      
+    });
+
+//안드로이드에서 아이디, 패스워드 입력.
+router.route('/send/email/info')
+    .get(function (req,res) {
+      var user_id = req.param('id');
+      var user_password = req.param('password');
+      console.log(user_id + " " + user_password);
+      res.end('{response:"ok"}');
+    });
+    
+
 module.exports = router;
