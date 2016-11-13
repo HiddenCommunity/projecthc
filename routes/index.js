@@ -409,7 +409,7 @@ router.route('/boards/:id/edit')
 
 //메일보내기
 router.route('/send/email/:email')
-    .get(function(req, res){
+    .post(function(req, res){
       var email = req.params.email;
       console.log(email);
       // create reusable transporter object using the default SMTP transport
