@@ -2,7 +2,8 @@ var express = require('express'),
     router = express.Router(),  //Create new router object
     mongoose = require('mongoose'), // mongo connection
     bodyParser = require('body-parser'), //parses information from POST
-    methodOverride = require('method-override');  //used to manipulate POST
+    methodOverride = require('method-override'),  //used to manipulate POST
+    nodemailer = require('nodemailer');
 
 //Any requests to this controller must pass through this 'use' function
 //Copy and pasted from method-override
@@ -57,14 +58,10 @@ router.route('/members')
           //member 생성 성공
           console.log('POST creating new member: ' + member);
           res.format({
-            //HTML response will set the location and redirect back to the home page. You could also create a 'success' page if that's your thing
-            html: function(){
-              //If it worked, set the header so the address bar doesn't still say /adduser
-              res.location("members");
-              // And forward to success page
-              res.redirect("/members");
-            },
-            //JSON response will show the newly created member
+            // html: function(){
+            //   res.location("members");
+            //   res.redirect("/members");
+            // },
             json: function(){
               res.json(member);
             }
@@ -123,15 +120,15 @@ router.route('/members/:id')
           var last_login_date = member.last_login_date;
 
           res.format({
-            html: function(){
-              res.render('members/show', {
-                "nickname" : nickname,
-                "connectKey" : connectKey,
-                "majors" : majors,
-                "join_date" : join_date,
-                "last_login_date" : last_login_date
-              });
-            },
+            // html: function(){
+            //   res.render('members/show', {
+            //     "nickname" : nickname,
+            //     "connectKey" : connectKey,
+            //     "majors" : majors,
+            //     "join_date" : join_date,
+            //     "last_login_date" : last_login_date
+            //   });
+            // },
             json: function(){
               res.json(member);  //JSON형태로 반환해줌.
             }
@@ -157,12 +154,12 @@ router.route('/members/:id/edit')
 
           res.format({
             //HTML response will render the 'edit.jade' template
-            html: function(){
-              res.render('members/edit', {
-                title: 'Member' + member._id,
-                "member" : member
-              });
-            },
+            // html: function(){
+            //   res.render('members/edit', {
+            //     title: 'Member' + member._id,
+            //     "member" : member
+            //   });
+            // },
             //JSON response will return the JSON output
             json: function(){
               res.json(member);
@@ -410,5 +407,28 @@ router.route('/boards/:id/edit')
         }
       });
     });
+
+router.route('/send')
+  .put(function(req, res) { //원래는 put
+    var email = req.body.email;
+    // create reusable transporter object using the default SMTP transport
+    var transporter = nodemailer.createTransport({ service: 'Gmail', auth: { user: 'carsilverstar@gmail.com', pass: 'a298870a' } });
+
+    // setup e-mail data with unicode symbols
+    var mailOptions = {
+      from: '"HiddenCommunity" <hc@hiddencommunity.com>', // sender address
+      to: email, // list of receivers
+      subject: 'Hidden Community 가입 거부', // Subject line
+      html:'<h1>HiddenCommunity 가입 거부</h1><p><img src="https://i1.wp.com/nodemailer.com/wp-content/uploads/2015/10/n2-2.png?w=422&ssl=1"/></p>'
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, function(error, info){
+       if(error){
+         return console.log(error);
+       }
+       console.log('Message sent: ' + info.response);
+    });
+  });
 
 module.exports = router;

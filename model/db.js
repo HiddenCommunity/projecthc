@@ -1,7 +1,7 @@
 //Setup Mongoose to MongoDB
 var mongoose = require('mongoose');
 if (process.platform == "win32") {
-    console.log(`this platform is ${process.platform}`)
+    console.log('this platform is ${process.platform}');
     var fs = require('fs');
     var tunnel = require('tunnel-ssh');
 
