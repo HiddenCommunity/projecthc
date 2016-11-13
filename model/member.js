@@ -9,4 +9,4 @@ var memberSchema = new Schema({
     last_login_date: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('member', memberSchema);
+module.exports = mongoose.model('Member', memberSchema);
