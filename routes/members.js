@@ -17,11 +17,11 @@ router.use(methodOverride(function(req, res){
 }));
 
 //build the REST operations at the base for members
-router.route('/')
+router.route('/members')
 //GET all members
     .get(function(req, res, next) {
         //retrieve all members from Mongo
-        mongoose.model('member').find({}, function (err, members) {
+        mongoose.model('Member').find({}, function (err, members) {
             if (err) {
                 return console.error(err);
             } else {
@@ -49,7 +49,7 @@ router.route('/')
         var join_date = Date.now();
 
         //call the create function for our database
-        mongoose.model('member').create({
+        mongoose.model('Member').create({
             nickname : nickname,
             join_date : join_date
         }, function (err, member) {
@@ -76,7 +76,7 @@ router.route('/')
     })
 
     // 회원가입 페이지
-    router.get('/new', function(req, res) {
+    router.get('/members/new', function(req, res) {
         //렌더링할 라우트. /new 요청을 하면, view/members/new.jade 파일이 HTML형식으로 렌더링된다.
         res.render('members/new', { title: 'Hidden Community !' });
     });
@@ -111,7 +111,7 @@ router.route('/')
      });
   });
 
-  router.route('/:id')
+  router.route('/members/:id')
      .get(function(req, res) {
          mongoose.model('member').findById(req.id, function (err, member) {
              if (err) {
@@ -142,11 +142,11 @@ router.route('/')
          });
      });
 
- router.route('/:id/edit')
+ router.route('/members/:id/edit')
  //GET Mongo ID로 member 1명 찾음
     .get(function(req, res) {
          //search for the member within Mongo
-        mongoose.model('member').findById(req.id, function (err, member) {
+        mongoose.model('Member').findById(req.id, function (err, member) {
              if (err) {
                  console.log('GET Error: There was a problem retrieving: ' + err);
              } else {
@@ -181,7 +181,7 @@ router.route('/')
          //var majors = req.body.majors;
 
          //find the document by ID
-        mongoose.model('member').findById(req.id, function (err, member) {
+        mongoose.model('Member').findById(req.id, function (err, member) {
              //update it
              member.update({
                  nickname : nickname
