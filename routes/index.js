@@ -1,4 +1,5 @@
 var express = require('express'),
+    app = express(),
     router = express.Router(),  //Create new router object
     mongoose = require('mongoose'), // mongo connection
     bodyParser = require('body-parser'), //parses information from POST
@@ -199,8 +200,6 @@ router.route('/members/:id/edit')
         })
       });
     });
-
-
 
 //http://52.78.207.133:3000/boards/
 router.route('/boards')
@@ -408,27 +407,30 @@ router.route('/boards/:id/edit')
       });
     });
 
-router.route('/send')
-  .put(function(req, res) { //원래는 put
-    var email = req.body.email;
-    // create reusable transporter object using the default SMTP transport
-    var transporter = nodemailer.createTransport({ service: 'Gmail', auth: { user: 'carsilverstar@gmail.com', pass: 'a298870a' } });
+router.route('/send/email/:email')
+    .get(function(req, res){
+      var email = req.params.email;
+      console.log(email);
+      // create reusable transporter object using the default SMTP transport
+      var transporter = nodemailer.createTransport({ service: 'Gmail', auth: { user: 'carsilverstar@gmail.com', pass: 'a298870a' } });
 
-    // setup e-mail data with unicode symbols
-    var mailOptions = {
-      from: '"HiddenCommunity" <hc@hiddencommunity.com>', // sender address
-      to: email, // list of receivers
-      subject: 'Hidden Community 가입 거부', // Subject line
-      html:'<h1>HiddenCommunity 가입 거부</h1><p><img src="https://i1.wp.com/nodemailer.com/wp-content/uploads/2015/10/n2-2.png?w=422&ssl=1"/></p>'
-    };
+      // setup e-mail data with unicode symbols
+      var mailOptions = {
+        from: '"HiddenCommunity" <hc@hiddencommunity.com>', // sender address
+        to: email, // list of receivers
+        subject: 'Hidden Community 가입 인증메일 ', // Subject line
+        html:'<h1>HiddenCommunity 가입 거부</h1><p><img src="https://i1.wp.com/nodemailer.com/wp-content/uploads/2015/10/n2-2.png?w=422&ssl=1"/></p>'};
 
-    // send mail with defined transport object
-    transporter.sendMail(mailOptions, function(error, info){
-       if(error){
-         return console.log(error);
-       }
-       console.log('Message sent: ' + info.response);
+      // send mail with defined transport object
+      transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+          res.json(error);
+          return console.log(error);
+        }
+        console.log('Message sent: ' + info.response);
+        res.json("ok");
+      });
+
     });
-  });
 
 module.exports = router;
