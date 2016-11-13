@@ -414,13 +414,12 @@ router.route('/send/email/:email')
       console.log(email);
       // create reusable transporter object using the default SMTP transport
       var transporter = nodemailer.createTransport({ service: 'Gmail', auth: { user: 'carsilverstar@gmail.com', pass: 'a298870a' } });
-
       // setup e-mail data with unicode symbols
       var mailOptions = {
         from: '"HiddenCommunity" <hc@hiddencommunity.com>', // sender address
         to: email, // list of receivers
         subject: 'Hidden Community 가입 인증메일 ', // Subject line
-        html:'<p><img src="./images/logo.png"/></p><h1>HiddenCommunity 가입 인증 메일입니다.</h1><h4>안녕하세요.</h4><h4>Hidden Community 서비스에 가입해주셔서 감사합니다.</h4><h4>아래 링크를 클릭하여 Hidden Community 서비스의 가입 인증을 완료해주세요.</h4><p><a href="http://52.78.207.133:3000/send/user/confirm?email="' +email + '"><img src="./images/auth_btn.png"/></a></p></p>'};
+        html:'<p><img src="http://i.imgur.com/xhasOE5.png"/></p><h1>HiddenCommunity 가입 인증 메일입니다.</h1><h4>안녕하세요.</h4><h4>Hidden Community 서비스에 가입해주셔서 감사합니다.</h4><h4>아래 링크를 클릭하여 Hidden Community 서비스의 가입 인증을 완료해주세요.</h4><p><a href="http://52.78.207.133:3000/send/user/confirm?email='+ email +'"><img src="http://i.imgur.com/k698ooP.png"/></a></p></p>'};
 
       // send mail with defined transport object
       transporter.sendMail(mailOptions, function(error, info){
@@ -450,7 +449,7 @@ router.route('/send/user/confirm')
           //member 생성 성공
           console.log('POST creating new member: ' + member);
           //등록 되었으면 인증 화면을 띄워준다.
-          res.end('<h1>HiddenCommunity 인증완료</h1><p><img src="https://i1.wp.com/nodemailer.com/wp-content/uploads/2015/10/n2-2.png?w=422&ssl=1"/></p>');
+          res.end('<h1>HiddenCommunity 인증완료</h1><p><img src="http://i.imgur.com/xhasOE5.png"/></p>');
         }
       })
     });
