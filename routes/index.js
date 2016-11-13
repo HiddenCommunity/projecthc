@@ -420,7 +420,7 @@ router.route('/send/email/:email')
         from: '"HiddenCommunity" <hc@hiddencommunity.com>', // sender address
         to: email, // list of receivers
         subject: 'Hidden Community 가입 인증메일 ', // Subject line
-        html:'<h1>HiddenCommunity 가입 거부</h1><p><img src="https://i1.wp.com/nodemailer.com/wp-content/uploads/2015/10/n2-2.png?w=422&ssl=1"/></p>'};
+        html:'<p><img src="./images/logo.png"/></p><h1>HiddenCommunity 가입 인증 메일입니다.</h1><h4>안녕하세요.</h4><h4>Hidden Community 서비스에 가입해주셔서 감사합니다.</h4><h4>아래 링크를 클릭하여 Hidden Community 서비스의 가입 인증을 완료해주세요.</h4><p><img src="./images/auth_btn.png"/></p></p>'};
 
       // send mail with defined transport object
       transporter.sendMail(mailOptions, function(error, info){
