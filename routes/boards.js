@@ -17,7 +17,7 @@ router.use(methodOverride(function(req, res){
 }))
 
 //http://52.78.207.133:3000/boards/
-router.route('/')
+router.route('/boards')
 //GET DB에서 모든 게시글 조회
     .get(function(req, res, next) {
         mongoose.model('Board').find({}, function (err, boards) {
@@ -79,7 +79,7 @@ router.route('/')
     });
 
 // http://52.78.207.133:3000/boards/new   ->new.jade 입력폼
-router.get('/new', function(req, res) {
+router.get('/boards/new', function(req, res) {
     res.render('boards/new', { title: '새 글 작성하기' });
 });
 
@@ -114,7 +114,7 @@ router.param('id', function(req, res, next, id) {
 
 // http://52.78.207.133:3000/boards/582674abcdf9fa75d82270d9
 // show.jade
-router.route('/:id')
+router.route('/boards/:id')
     .get(function(req, res) {
         mongoose.model('Board').findById(req.id, function (err, board) {
             if (err) {
@@ -136,7 +136,7 @@ router.route('/:id')
     });
 
 //http://52.78.207.133:3000/boards/582674abcdf9fa75d82270d9/edit
-router.route('/:id/edit')
+router.route('/boards/:id/edit')
     //GET Mongo ID로 board 하나 검색
     .get(function(req, res) {
         mongoose.model('Board').findById(req.id, function (err, board) {
@@ -176,7 +176,7 @@ router.route('/:id/edit')
                 title : title,
                 body : body,
                 date : date
-            }, function (err, blobID) {
+            }, function (err, board) {
                 if (err) {
                     res.send("[실패] Updating 실패: " + err);
                 } else {
