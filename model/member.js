@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var memberSchema = new Schema({
+    email: String,
     nickname: String,
     connectKey: String,
     majors: [{category: String}],
