@@ -9,7 +9,7 @@ var express = require('express'),
     members = require('./model/member'),
     boards = require('./model/board'),
     routes = require('./routes/index');
-/// members = require('./routes/members');
+//    members = require('./routes/members');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));  //view 템플릿이 있는 디렉토리
