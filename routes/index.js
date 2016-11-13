@@ -407,8 +407,9 @@ router.route('/boards/:id/edit')
       });
     });
 
+//메일보내기
 router.route('/send/email/:email')
-    .post(function(req, res){
+    .get(function(req, res){
       var email = req.params.email;
       console.log(email);
       // create reusable transporter object using the default SMTP transport
@@ -428,7 +429,7 @@ router.route('/send/email/:email')
           return console.log(error);
         }
         console.log('Message sent: ' + info.response);
-        res.json("ok");
+        res.json({response : "ok"});
       });
 
     });
