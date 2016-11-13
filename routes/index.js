@@ -27,12 +27,12 @@ router.route('/members')
         } else {
           //respond to both HTML and JSON. JSON responses require 'Accept: application/json;' in the Request Header
           res.format({
-            html: function(){
-            res.render('members/index', {
-                title: 'All my members',
-               "member" : members
-                });
-               },
+            // html: function(){
+            // res.render('members/index', {
+            //     title: 'All my members',
+            //    "member" : members
+            //     });
+            //    },
             json: function(){
               res.json(members);
             }
