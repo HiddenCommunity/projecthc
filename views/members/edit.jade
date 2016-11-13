@@ -5,13 +5,7 @@ block content
 		Member ID #{member._id}
 	form(action='/members/#{member._id}/edit',method='post',name='updateMember',enctype='application/x-www-form-urlencoded')
 		p Nickname:
-			input#inputNickname(type='text', value='#{member.name}', name='name')
-		p Badge:
-			input#inputBadge(type='number', value='#{member.badge}', name='badge')
-		p DOB:
-			input#inputDob(type='date', value='#{blobdob}', name='dob')
-		p Are you Loved?:
-			input#inputIsLoved(type='checkbox', name='isloved', checked=('#{blob.isloved}'==='true' ? "checked" : undefined))
+			input#inputNickname(type='text', value='#{member.nickname}', name='nickname')
 		p
 			input(type='hidden',value='PUT',name='_method')
 		p

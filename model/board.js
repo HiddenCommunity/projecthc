@@ -8,16 +8,16 @@ var boardSchema = new Schema({
     body: String,
     date: { type: Date, default: Date.now },
     meta: {
-        hit: Number,
-        like: Number,
-        hate: Number
+        hit: {type:Number, default:0},
+        like: {type:Number, default:0},
+        hate: {type:Number, default:0}
     },
-    comments: [{
+    comment: [{
         author: String,
         body: String,
         date: Date,
-        like: Number,
-        hate: Number
+        like: {type:Number, default:0},
+        hate: {type:Number, default:0}
     }]
 });
 

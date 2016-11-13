@@ -3,15 +3,15 @@ extends ../layout
 block content
 	h1.
 		#{title}
-	form#formAddBlob(name="createBoard",method="post",action="/boards")
+	form#formAddBoard(name="createBoard",method="post",action="/boards")
 		p Category:
-			input#inputNickname(type="text", name="category")
-		p Writer:
-			input#inputWriter(type="text", name="writer")
+			input#inputCategory(type="text", name="category")
+		p Author:
+			input#inputAuthor(type="text", name="author")
 		p Title :
 			input#inputTitle(type="text", name="title")
-		p Content :
-			input#inputContent(type="text", name="content")
+		p Body :
+			input#inputBody(type="text", name="body")
 		p
 			button#btnSubmit(type="submit") submit
 

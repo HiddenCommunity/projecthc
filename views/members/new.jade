@@ -3,7 +3,7 @@ extends ../layout
 block content
 	h1.
 		#{title}
-	form#formAddBlob(name="addMember",method="post",action="/members")
+	form#formAddMeber(name="addMember",method="post",action="/members")
 		p Nickname:
 			input#inputNickname(type="text", placeholder="ex. abcd1234", name="nickname")
 		p Password:

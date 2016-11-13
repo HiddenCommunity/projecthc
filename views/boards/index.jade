@@ -4,18 +4,21 @@ block content
     h1.
          #{title}
     ul
-        - each blob, i in blobs
+        - each board, i in boards
             li
-                = blob.name
-                = blob.badge
-                = blob.dob
-                = blob.isloved
-                = blob._id
-                form(action='/blobs/#{blob._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
+                = board.category
+                = board.author
+                = board.title
+                = board.body
+                = board.date
+                = board.meta
+                = board.comment
+                = board._id
+                form(action='/boards/#{board._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
                     input(type='hidden',value='DELETE',name='_method')
                     button(type='submit').
                         Delete
                 p 
-                    a(href='/blobs/#{blob._id}/edit') Edit
+                    a(href='/boards/#{board._id}/edit') Edit
                 p
-                    a(href='/blobs/#{blob._id}') Show
+                    a(href='/boards/#{board._id}') Show
