@@ -8,8 +8,8 @@ var express = require('express'),
     db = require('./model/db'),  //db 파일을 변수로 추가한다.
     member = require('./model/member'),
     boards = require('./model/board'),
-    routes = require('./routes/index'),
-    members = require('./routes/members');
+    routes = require('./routes/index');
+//    members = require('./routes/members');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));  //view 템플릿이 있는 디렉토리
