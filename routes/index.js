@@ -407,7 +407,7 @@ router.route('/boards/:id/edit')
       });
     });
 
-//메일보내기
+//메일보내기  test:get
 router.route('/send/email/:email')
     .post(function(req, res){
       var email = req.params.email;
@@ -420,7 +420,7 @@ router.route('/send/email/:email')
         from: '"HiddenCommunity" <hc@hiddencommunity.com>', // sender address
         to: email, // list of receivers
         subject: 'Hidden Community 가입 인증메일 ', // Subject line
-        html:'<p><img src="./images/logo.png"/></p><h1>HiddenCommunity 가입 인증 메일입니다.</h1><h4>안녕하세요.</h4><h4>Hidden Community 서비스에 가입해주셔서 감사합니다.</h4><h4>아래 링크를 클릭하여 Hidden Community 서비스의 가입 인증을 완료해주세요.</h4><p><a href="http://52.78.207.133:3000/send/email/confirm?email="' +email + '"><img src="./images/auth_btn.png"/></a></p></p>'};
+        html:'<p><img src="./images/logo.png"/></p><h1>HiddenCommunity 가입 인증 메일입니다.</h1><h4>안녕하세요.</h4><h4>Hidden Community 서비스에 가입해주셔서 감사합니다.</h4><h4>아래 링크를 클릭하여 Hidden Community 서비스의 가입 인증을 완료해주세요.</h4><p><a href="http://52.78.207.133:3000/send/user/confirm?email="' +email + '"><img src="./images/auth_btn.png"/></a></p></p>'};
 
       // send mail with defined transport object
       transporter.sendMail(mailOptions, function(error, info){
@@ -434,27 +434,65 @@ router.route('/send/email/:email')
 
     });
 
-
+//get
 //이메일 인증메일에서 버튼클릭하면 이쪽으로 온다.
-router.route('/send/email/confirm')
-    .get(function(req,res){
-        var email = req.param('email');
-        //디비에 인증된 이메일 등록
-
-        //등록 되었으면 인증 화면을 띄워준다.
-        res.end('<h1>HiddenCommunity 인증완료</h1><p><img src="https://i1.wp.com/nodemailer.com/wp-content/uploads/2015/10/n2-2.png?w=422&ssl=1"/></p>');
+router.route('/send/user/confirm')
+    .get(function(req,res) {
+      var email = req.param('email');
+      console.log(email);
+      //디비에 인증된 이메일 등록
+      mongoose.model('Member').create({
+        email: email
+      }, function (err, member) {
+        if (err) {
+          res.send("[실패] 이메일 insert 실패");
+        } else {
+          //member 생성 성공
+          console.log('POST creating new member: ' + member);
+          //등록 되었으면 인증 화면을 띄워준다.
+          res.end('<h1>HiddenCommunity 인증완료</h1><p><img src="https://i1.wp.com/nodemailer.com/wp-content/uploads/2015/10/n2-2.png?w=422&ssl=1"/></p>');
+        }
+      })
     });
 
-router.route('send/email/validate')
+//db 에서 인증한 이메일이 있는지 체크
+router.route('/send/user/validate')
     .post(function(req,res) {
       var email = req.param('email');
+      console.log(email);
       //디비에 이메일이 인증되어있나 체크.
-      
-    });
+      mongoose.model('Member').findOne({'email': email }, function (err, member) {
+          //db에 그 email가 없으면 404
+          if (err) {
+            console.log(email + ' was not found');
+            res.status(404);
+            var err = new Error('Not Found');
+            err.status = 404;
+            res.format({
+              html: function(){
+                next(err);
+              },
+              json: function(){
+                res.json({message : err.status  + ' ' + err});
+              }
+            });
+            //해당 id를 찾으면 req.id에 저장하고 계속 쓴다.
+          } else {
+            if(member == null){
+              res.json({response : "failed"});
+              return;
+            }
+            console.log(member);
+            res.json({response : "ok"});
+           // next();
+          }
+        });
+      });
+
 
 //안드로이드에서 아이디, 패스워드 입력.
-router.route('/send/email/info')
-    .post(function (req,res) {
+router.route('/send/user/info')
+    .get(function (req,res){
       var user_id = req.param('id');
       var user_password = req.param('password');
       console.log(user_id + " " + user_password);
