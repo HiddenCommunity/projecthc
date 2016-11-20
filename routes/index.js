@@ -47,13 +47,13 @@ router.post('/', function(req,res){
     //해당하는 id가 없을 때,
     if (err) {
       console.log(id + ' was not found' + err);
-      //res.json({response : "no"});
+      res.json({response : "no"});
       //res.redirect('/members/new');  //계정인증화면으로
     } else { //해당 id인 세션을 찾았을 때
       console.log('find');
       // once validation is done save the new item in the req
       //req.session.id = session.id;
-      res.json({message : "ok"});
+      res.json({response : "ok"});
       //res.redirect('/boards');  //게시글 전체목록으로 보냄.
     }
   })
