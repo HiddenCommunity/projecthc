@@ -38,21 +38,22 @@ router.use(session({
   saveUninitialized: true
 }));
 
-router.get('/', function(req,res){
+//test:get
+router.post('/', function(req,res){
   //res.send('Hello' + JSON.stringify(req.session));
-  id = req.session._id;
+  var id = req.session._id;
   console.log(id);
   mongoose.model('Session').findById(id, function (err, session) {
     //해당하는 id가 없을 때,
     if (err) {
       console.log(id + ' was not found');
-      res.json({message : 'no'});
+      res.json({response : "no"});
       //res.redirect('/members/new');  //계정인증화면으로
     } else { //해당 id인 세션을 찾았을 때
       console.log(session);
       // once validation is done save the new item in the req
       req.session.id = id;
-        res.json({message : 'ok'});
+      res.json({message : "ok"});
       //res.redirect('/boards');  //게시글 전체목록으로 보냄.
     }
   })
