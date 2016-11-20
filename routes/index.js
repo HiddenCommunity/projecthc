@@ -4,11 +4,21 @@ var express = require('express'),
     mongoose = require('mongoose'), // mongo connection
     bodyParser = require('body-parser'), //parses information from POST
     methodOverride = require('method-override'),  //used to manipulate POST
-    nodemailer = require('nodemailer');
+    nodemailer = require('nodemailer'),
+    session = require('express-session'),
+    cookieParser = require('cookie-parser'),
+    MongoDBStore = require('connect-mongodb-session')(session),
+    store = new MongoDBStore(
+        {
+          uri : 'mongodb://localhost:27017/hcDB',
+          collection : 'sessions'
+        }
+    );
 
 //Any requests to this controller must pass through this 'use' function
 //Copy and pasted from method-override
-router.use(bodyParser.urlencoded({ extended: true }))
+router.use(bodyParser.urlencoded({ extended: true }));
+router.use(cookieParser());
 router.use(methodOverride(function(req, res){
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
     // look in urlencoded POST bodies and delete it
@@ -17,6 +27,34 @@ router.use(methodOverride(function(req, res){
     return method
   }
 }));
+
+router.use(session({
+  secret : '@345adfh%a12&%',  // 암호화 키
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7  //쿠키유효기간 : 1주일
+  },
+  store : store,
+  resave : false,  //접속할 때마다 새롭게 발급할 것인지
+  saveUninitialized: true
+}));
+
+router.get('/', function(req,res){
+  //res.send('Hello' + JSON.stringify(req.session));
+  id = req.session._id;
+  console.log(id);
+  mongoose.model('Session').findById(id, function (err, session) {
+    //해당하는 id가 없을 때,
+    if (err) {
+      console.log(id + ' was not found');
+      res.redirect('/members/new');  //계정인증화면으로
+    } else { //해당 id인 세션을 찾았을 때
+      console.log(session);
+      // once validation is done save the new item in the req
+      req.session.id = id;
+      res.redirect('/boards');  //게시글 전체목록으로 보냄.
+    }
+  })
+});
 
 //build the REST operations at the base for members
 router.route('/members')
@@ -59,10 +97,6 @@ router.route('/members')
           //member 생성 성공
           console.log('POST creating new member: ' + member);
           res.format({
-            // html: function(){
-            //   res.location("members");
-            //   res.redirect("/members");
-            // },
             json: function(){
               res.json(member);
             }
@@ -461,7 +495,7 @@ router.route('/send/user/validate')
       console.log(email);
       //디비에 이메일이 인증되어있나 체크.
       mongoose.model('Member').findOne({'email': email }, function (err, member) {
-          //db에 그 email가 없으면 404
+          //db에 그 email 이 없으면 404
           if (err) {
             console.log(email + ' was not found');
             res.status(404);
@@ -497,6 +531,10 @@ router.route('/send/user/info')
       var major1 = req.param('major1');
       var major2 = req.param('major2');
       var major3 = req.param('major3');
+      //major1 = iconv.encode(major1, utf-8);
+      //major2 = iconv.encode(major2, enc);
+      //major3 = iconv.toString(major3);
+
       //이메일을 찾아서
       mongoose.model('Member').findOne({'email': email }, function (err, member) {
         //update it

@@ -8,6 +8,7 @@ var express = require('express'),
     db = require('./model/db'),  //db 파일을 변수로 추가한다.
     members = require('./model/member'),
     boards = require('./model/board'),
+    sessions = require('./model/session'),
     routes = require('./routes/index');
 
 // view engine setup
