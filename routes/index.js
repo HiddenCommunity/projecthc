@@ -41,16 +41,17 @@ router.use(session({
 //test:get
 router.post('/', function(req,res){
   //res.send('Hello' + JSON.stringify(req.session));
-  var id = req.session._id;
+  var id = req.session.id;
+  //var id = '1231';
   console.log(id);
-  mongoose.model('Session').findById(id, function (err, session) {
+  mongoose.model('Session').findById(id, function (err, sessions) {
     //해당하는 id가 없을 때,
     if (err) {
       console.log(id + ' was not found');
       res.json({response : "no"});
       //res.redirect('/members/new');  //계정인증화면으로
     } else { //해당 id인 세션을 찾았을 때
-      console.log(session);
+      console.log(sessions);
       // once validation is done save the new item in the req
       req.session.id = id;
       res.json({message : "ok"});
