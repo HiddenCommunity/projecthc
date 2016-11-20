@@ -40,20 +40,19 @@ router.use(session({
 
 //test:get
 router.post('/', function(req,res){
-  //res.send('Hello' + JSON.stringify(req.session));
-  var id = req.session.id;
-  //var id = '1231';
+  //res.send('Hello' + JSON.stringify(req.session.id));
+  var id = JSON.stringify(req.session.id);
   console.log(id);
-  mongoose.model('Session').findById(id, function (err, sessions) {
+  mongoose.model('Session').findOne({'id': id }, function (err, session) {
     //해당하는 id가 없을 때,
     if (err) {
-      console.log(id + ' was not found');
-      res.json({response : "no"});
+      console.log(id + ' was not found' + err);
+      //res.json({response : "no"});
       //res.redirect('/members/new');  //계정인증화면으로
     } else { //해당 id인 세션을 찾았을 때
-      console.log(sessions);
+      console.log('find');
       // once validation is done save the new item in the req
-      req.session.id = id;
+      //req.session.id = session.id;
       res.json({message : "ok"});
       //res.redirect('/boards');  //게시글 전체목록으로 보냄.
     }
