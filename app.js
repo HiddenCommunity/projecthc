@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/members', members);
 app.use('/boards', boards);
-app.use('/sessions', sessions);
+//app.use('/sessions', sessions);
 
 // catch 404 and forward to error handler
 // 마운트 경로가 없는 미들웨어함수. 앱이 요청을 받을 때마다 실행된다.
