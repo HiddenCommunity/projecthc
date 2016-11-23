@@ -16,7 +16,7 @@ route.post('/send/:email',function(req, res){
         from: '"HiddenCommunity" <hc@hiddencommunity.com>', // sender address
         to: email, // list of receivers
         subject: 'Hidden Community 가입 인증메일 ', // Subject line
-        html:'<p><img src="http://i.imgur.com/xhasOE5.png"/></p><h1>HiddenCommunity 가입 인증 메일입니다.</h1><h4>안녕하세요.</h4><h4>Hidden Community 서비스에 가입해주셔서 감사합니다.</h4><h4>아래 링크를 클릭하여 Hidden Community 서비스의 가입 인증을 완료해주세요.</h4><p><a href="http://52.78.207.133:3000/emails/confirm/'+ email +'"><img src="http://i.imgur.com/k698ooP.png"/></a></p></p>'
+        html:'<p><img src="http://i.imgur.com/xhasOE5.png"/></p><h1>HiddenCommunity 가입 인증 메일입니다.</h1><h4>안녕하세요.</h4><h4>Hidden Community 서비스에 가입해주셔서 감사합니다.</h4><h4>아래 링크를 클릭하여 Hidden Community 서비스의 가입 인증을 완료해주세요.</h4><p><a href="http://52.78.207.133:3000/emails/confirm?email='+ email +'"><img src="http://i.imgur.com/k698ooP.png"/></a></p></p>'
 //        html:'<p><img src="http://i.imgur.com/xhasOE5.png"/></p><h1>HiddenCommunity 가입 인증 메일입니다.</h1><h4>안녕하세요.</h4><h4>Hidden Community 서비스에 가입해주셔서 감사합니다.</h4><h4>아래 링크를 클릭하여 Hidden Community 서비스의 가입 인증을 완료해주세요.</h4><p><a href="http://localhost:3000/emails/confirm?email='+ email +'"><img src="http://i.imgur.com/k698ooP.png"/></a></p></p>'
     };
 
@@ -32,7 +32,6 @@ route.post('/send/:email',function(req, res){
 });
 
 //인증메일에서 버튼클릭하면 이쪽으로 온다.
-//test:get
 route.get('/confirm', function(req,res) {
     var email = req.param('email');
     console.log(email);
