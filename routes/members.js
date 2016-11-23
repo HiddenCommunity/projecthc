@@ -54,9 +54,18 @@ route.route('/addInfo')
         var major1 = req.query.major1;
         var major2 = req.query.major2;
         var major3 = req.query.major3;
+        //테스트용
+        // var email = req.body.email;
+        // var nickname = req.body.nickname;
+        // var major1 = req.body.major1;
+        // var major2 = req.body.major2;
+        // var major3 = req.body.major3;
+        var id = "";
         console.log(email, nickname, major1);
         //이메일을 찾아서
         mongoose.model('Member').findOne({'email': email }, function (err, member) {
+            id = member._id;
+            console.log('member_id : ' + id);
             //update it
             member.update({
                 nickname : nickname,
@@ -70,14 +79,15 @@ route.route('/addInfo')
                 else {
                     console.log('[성공] 회원 정보 추가/수정 완료!');
                     //console.log(req.session.login);
-                    //req.session.login="ok";  //세션에 변수를 설정해준다.
-                    //req.session.displayName = nickname;
+                    req.session.login="ok";  //세션에 변수를 설정해준다.
+                    req.session.displayName = nickname;
                     //console.log(req.session.login);
                     //console.log('세션변수설정완료');
                     //console.log(req.session.displayName);
-                    console.log(req.session.id);
-                    req.session.member_id = eval(member._id);
-                    console.log(req.session.member_id);
+                    console.log('req.session.id : ' + req.session.id);
+                    req.session.member_id = id;
+                    console.log('req.session.member_id : ' + req.session.member_id);
+                    console.log(req.session);
                     res.json(req.session);
                     //res.json({response : "ok"});
                 }
