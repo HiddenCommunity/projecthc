@@ -24,16 +24,16 @@ route.use(session({
 
 //첫 로딩화면에서 요청해야할 것.
 //test:get
-route.post('/login', function(req,res) {
+route.get('/login', function(req,res) {
    if(req.session.login=='ok'){ //값이 있으면
        console.log(req.session.login);
        console.log('자동로그인 완료');
-       res.json({response:"board"});
-       //res.render('boards/new');  //게시판 페이지로 이동
+       //res.json({response:"board"});
+       res.render('boards/new');  //게시판 페이지로 이동
    }else{
        console.log('이메일 계정 입력화면으로 이동');
-       res.json({response:"email"});
-       //res.render('members/new');  //게시판 페이지로 이동
+       //res.json({response:"email"});
+       res.render('members/new');  //게시판 페이지로 이동
    }
 })
 //
@@ -54,7 +54,7 @@ route.route('/addInfo')
         var major1 = req.query.major1;
         var major2 = req.query.major2;
         var major3 = req.query.major3;
-        //console.log(email, nickname, major1);
+        console.log(email, nickname, major1);
         //이메일을 찾아서
         mongoose.model('Member').findOne({'email': email }, function (err, member) {
             //update it
@@ -69,13 +69,17 @@ route.route('/addInfo')
                 }
                 else {
                     console.log('[성공] 회원 정보 추가/수정 완료!');
-                    console.log(req.session.login);
-                    req.session.login="ok";  //세션에 변수를 설정해준다.
-                    req.session.displayName = nickname;
-                    console.log(req.session.login);
-                    console.log('세션변수설정완료');
-                    console.log(req.session.displayName);
-                    res.json({response : "ok"});
+                    //console.log(req.session.login);
+                    //req.session.login="ok";  //세션에 변수를 설정해준다.
+                    //req.session.displayName = nickname;
+                    //console.log(req.session.login);
+                    //console.log('세션변수설정완료');
+                    //console.log(req.session.displayName);
+                    console.log(req.session.id);
+                    req.session.member_id = eval(member_id);
+                    console.log(req.session.member_id);
+                    res.json(req.session);
+                    //res.json({response : "ok"});
                 }
             });
         })

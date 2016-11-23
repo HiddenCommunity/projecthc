@@ -28,17 +28,17 @@ route.post('/:major', function(req, res){
 });
 
 //POST 새 게시글 작성
-route.route('/:major/new')
+route.route('/new')
     .get(function(req, res){
         res.render('boards/new');
     })
     .post(function(req, res) {
-        var category = req.params.major;
+        var category = req.body.category;
         var author = req.session.displayName;
         var title = req.body.title;
         var body = req.body.body;
         var date = req.body.date;
-
+        console.log(category, author, title);
         mongoose.model('Board').create({
             category : category,
             author : author,
@@ -54,6 +54,7 @@ route.route('/:major/new')
         }, function (err, board) {
             if (err) {
                 res.send("[error] 게시글 작성 실패");
+                console.log('실패');
             } else { //게시글 생성 성공
                 console.log('POST 게시글 작성 ' + board.title);
                 res.json(board);
