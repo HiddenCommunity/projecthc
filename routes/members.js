@@ -45,17 +45,17 @@ route.get('/new', function(req, res){
 });
 
 //안드로이드에서 아이디, 패스워드 입력.
-route.route('/addInfo/:email')
+route.route('/addInfo')
     .get(function (req, res){  //테스트용 코드
         res.render('members/edit', { title: '안드로이드에서 사용자 정보 입력하는 화면' });
     })
     .post(function (req,res){
         var email = req.params.email;
         //var password = req.param('password');
-        var nickname = req.body.nickname;
-        var major1 = req.body.major1;
-        var major2 = req.body.major2;
-        var major3 = req.body.major3;
+        var nickname = req.params.nickname;
+        var major1 = req.params.major1;
+        var major2 = req.params.major2;
+        var major3 = req.params.major3;
 
         //이메일을 찾아서
         mongoose.model('Member').findOne({'email': email }, function (err, member) {
