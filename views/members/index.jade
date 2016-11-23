@@ -1,20 +1,20 @@
 extends ../layout
 
 block content
-    h1.
-         #{title}
-    ul
-        - each member, i in members
-            li
-                = member.nickname
-                = member.join_date
+  h1.
+    #{title}
+  ul
+    - each member, i in members
+    li
+      = member._id
+      = member.email
+      = member.join_date
 
-                = member._id
-                form(action='/members/#{member._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
-                    input(type='hidden',value='DELETE',name='_method')
-                    button(type='submit').
-                        Delete
-                p 
-                    a(href='/members/#{member._id}/edit') Edit
-
-                    a(href='/members/#{member._id}') Show
+      form(action='/boards/#{board._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
+        input(type='hidden',value='DELETE',name='_method')
+        button(type='submit').
+          Delete
+      p
+        a(href='/boards/#{board._id}/edit') Edit
+      p
+        a(href='/boards/#{board._id}') Show

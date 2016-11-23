@@ -1,18 +1,10 @@
 extends ../layout
 
 block content
-	h1.
-		#{title}
-	form#formAddMeber(name="addMember",method="post",action="/members")
-		p Nickname:
-			input#inputNickname(type="text", placeholder="ex. abcd1234", name="nickname")
-		p Password:
-			input#inputPassword(type="password", name="password")
-		p major:
-			input#inputMajor(type="text", name="major")
-		p
-			button#btnSubmit(type="submit") submit
-
-
-
-
+    h1.
+        #{title}
+    form#formAddMember(name="addMember",method="post",action="/emails/send/ceb0527@ajou.ac.kr")
+        p email:
+            input#inputEmail(type="text", placeholder="ex. abcd@univ.ac.kr", name="email")
+        p
+            button#btnSubmit(type="submit") submit

@@ -1,24 +1,24 @@
 extends ../layout
 
 block content
-    h1.
-         #{title}
-    ul
-        - each board, i in boards
-            li
-                = board.category
-                = board.author
-                = board.title
-                = board.body
-                = board.date
-                = board.meta
-                = board.comment
-                = board._id
-                form(action='/boards/#{board._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
-                    input(type='hidden',value='DELETE',name='_method')
-                    button(type='submit').
-                        Delete
-                p 
-                    a(href='/boards/#{board._id}/edit') Edit
-                p
-                    a(href='/boards/#{board._id}') Show
+  h1.
+    #{title}
+  ul
+    - each board, i in boards
+    li
+      = board.category
+      = board.author
+      = board.title
+      = board.body
+      = board.date
+      = board.meta
+      = board.comment
+      = board._id
+      form(action='/boards/#{board._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
+        input(type='hidden',value='DELETE',name='_method')
+        button(type='submit').
+          Delete
+      p
+        a(href='/boards/#{board._id}/edit') Edit
+      p
+        a(href='/boards/#{board._id}') Show

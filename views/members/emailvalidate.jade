@@ -1,0 +1,9 @@
+extends ../layout
+
+block content
+    h1.
+        #{title}
+    form#formEmailValidate(name="emailValidate",method="get",action="/emails/validate/ceb0527@ajou.ac.kr")
+        p
+            input#validateEmail(type="hidden", value="ceb0527@ajou.ac.kr", name="email")
+    button#btnSubmit(type="submit") submit

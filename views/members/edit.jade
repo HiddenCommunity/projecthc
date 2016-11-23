@@ -1,13 +1,21 @@
 extends ../layout
 
 block content
-	h1.
-		Member ID #{member._id}
-	form(action='/members/#{member._id}/edit',method='post',name='updateMember',enctype='application/x-www-form-urlencoded')
-		p Nickname:
-			input#inputNickname(type='text', value='#{member.nickname}', name='nickname')
-		p
-			input(type='hidden',value='PUT',name='_method')
-		p
-			button#btnSubmit(type='submit').
-				Update
+    h1.
+        #{title}
+    form(action='/members/addInfo',method='post',name='updateMember',enctype='application/x-www-form-urlencoded')
+        p email:
+            input#inputEmail(type="hidden", value="ceb0527@ajou.ac.kr", name="email")
+        p Nickname:
+            input#inputNickname(type="text", placeholder="ex. abcd1234", name="nickname")
+        p Password:
+            input#inputPassword(type="password", name="password")
+        p major1:
+            input#inputMajor1(type="text", name="major1")
+        p major2:
+            input#inputMajor2(type="text", name="major2")
+        p major3:
+            input#inputMajor3(type="text", name="major3")
+        p
+            button#btnSubmit(type='submit').
+                Update

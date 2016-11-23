@@ -1,15 +1,20 @@
 var express = require('express'),
+    app = express(),
     path = require('path'),
     favicon = require('serve-favicon'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
-    app = express(), //express application
-    db = require('./model/db'),  //db 파일을 변수로 추가한다.
-    members = require('./model/member'),
-    boards = require('./model/board'),
-    sessions = require('./model/session'),
-    routes = require('./routes/index');
+    methodOverride = require('method-override');
+
+var db = require('./model/db'),  //db 파일을 변수로 추가한다.
+    member = require('./model/member'),
+    board = require('./model/board');
+
+var routes = require('./routes/index'),
+    members = require('./routes/members'),
+    boards = require('./routes/boards'),
+    emails = require('./routes/emails');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));  //view 템플릿이 있는 디렉토리
@@ -19,15 +24,24 @@ app.set('view engine', 'jade');  //사용할 템플릿 엔진
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride(function(req, res){
+    if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+        // look in urlencoded POST bodies and delete it
+        var method = req.body._method
+        delete req.body._method
+        return method
+    }
+}));
 
-//middleware 함수 호출
+
+//middleware. route 등록
 app.use('/', routes);
-app.use('/members', members);
+app.use('/members', members);  // '/members' 경로로 들어오는 모든 접속은 router에게 위임한다.
 app.use('/boards', boards);
-app.use('/sessions', sessions);
+app.use('/emails', emails);
 
 // catch 404 and forward to error handler
 // 마운트 경로가 없는 미들웨어함수. 앱이 요청을 받을 때마다 실행된다.
