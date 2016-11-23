@@ -32,7 +32,8 @@ route.post('/send/:email',function(req, res){
 });
 
 //인증메일에서 버튼클릭하면 이쪽으로 온다.
-route.get('/confirm', function(req,res) {
+//test:get
+route.post('/confirm', function(req,res) {
     var email = req.param('email');
     console.log(email);
     //--------------------------------------암호화하기추가해야함!
