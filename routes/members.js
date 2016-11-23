@@ -29,13 +29,24 @@ route.post('/login', function(req,res) {
    if(req.session.login){ //값이 있으면
        console.log(req.session.login);
        console.log('자동로그인 완료');
-       res.json({response:"board"});
-       res.render('boards/new'); //게시판 페이지로 이동
+       res.format({
+           html: function(){
+               res.render('boards/new');  //게시판 페이지로 이동
+           },
+           json: function(){
+               res.json({response:"board"});
+           }
+       });
    }else{
        console.log('이메일 계정 입력화면으로 이동');
-       res.json({response:"email"});
-       res.redirect('/members/new'); //게시판 페이지로 이동
-
+       res.format({
+           html: function(){
+               res.render('boards/new');  //게시판 페이지로 이동
+           },
+           json: function(){
+               res.json({response:"email"});
+           }
+       });
    }
 })
 
