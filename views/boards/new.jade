@@ -3,11 +3,9 @@ extends ../layout
 block content
     h1.
         #{title}
-    form#formAddBoard(name="createBoard",method="post",action="/boards")
+    form#formAddBoard(name="createBoard",method="post",action="/boards/new")
         p Category:
             input#inputCategory(type="text", name="category")
-        p Author:
-            input#inputAuthor(type="text", name="author")
         p Title :
             input#inputTitle(type="text", name="title")
         p Body :

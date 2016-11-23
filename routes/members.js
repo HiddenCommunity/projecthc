@@ -9,14 +9,13 @@ var express = require('express'),
             uri : 'mongodb://localhost:27017/hcDB',
             collection : 'sessions'
         }
-    ),
-    sess;
+    );
 
 route.use(cookieParser());
 route.use(session({
     secret : '@345a!d^f$h%a12&*#%',  // 암호화 키
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 7, //쿠키유효기간 : 1주일
+        maxAge: 1000 * 60 * 60 * 24 * 7 //쿠키유효기간 : 1주일
     },
     store : store,
     resave : false,  //접속할 때마다 새롭게 발급할 것인지
@@ -34,15 +33,15 @@ route.post('/login', function(req,res) {
    }else{
        console.log('이메일 계정 입력화면으로 이동');
        res.json({response:"email"});
-       //res.render('boards/new');  //게시판 페이지로 이동
+       //res.render('members/new');  //게시판 페이지로 이동
    }
 })
-
-//이메일 계정 입력 <-테스트용
-route.get('/new', function(req, res){
-   //렌더링할 라우트. /new 요청을 하면, view/members/new.jade 파일이 HTML형식으로 렌더링된다.
-   res.render('members/new', { title: 'Hidden Community !' });
-});
+//
+// //이메일 계정 입력 <-테스트용
+// route.get('/new', function(req, res){
+//    //렌더링할 라우트. /new 요청을 하면, view/members/new.jade 파일이 HTML형식으로 렌더링된다.
+//    res.render('members/new', { title: 'Hidden Community !' });
+// });
 
 //안드로이드에서 아이디, 패스워드 입력.
 route.route('/addInfo')
@@ -51,7 +50,6 @@ route.route('/addInfo')
     })
     .post(function (req,res){
         var email = req.params.email;
-        //var password = req.param('password');
         var nickname = req.params.nickname;
         var major1 = req.params.major1;
         var major2 = req.params.major2;
@@ -107,7 +105,7 @@ route.param('nickname', function(req, res, next, nickname) {
         } else {
             console.log(member);
             // once validation is done save the new item in the req
-            req.nickname = member.nickname; //db의 _id로 사용자를 찾기 위해서.
+             //db의 _id로 사용자를 찾기 위해서.
             // go to the next thing
             next();  //다음 라우트로
         }

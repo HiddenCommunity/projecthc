@@ -17,7 +17,7 @@ var express = require('express'),
 * */
 //전공1게시판
 route.get('/:major', function(req, res){
-    var major1 = req.params.major1;
+    var major = req.params.major;
     mongoose.model('Board').find({category: major}, function (err, boards) {
         if (err) {
             return console.error(err);
@@ -28,9 +28,13 @@ route.get('/:major', function(req, res){
 });
 
 //POST 새 게시글 작성
-route.post('/:major/new', function(req, res) {
+route.route('/:major/new')
+    .get(function(req, res){
+        res.render('boards/new');
+    })
+    .post(function(req, res) {
         var category = req.params.major;
-        var author = req.body.author;
+        var author = req.session.displayName;
         var title = req.body.title;
         var body = req.body.body;
         var date = req.body.date;
