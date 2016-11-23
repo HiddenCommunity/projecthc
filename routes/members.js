@@ -76,6 +76,7 @@ route.route('/addInfo')
                     req.session.displayName = nickname;
                     console.log(req.session.login);
                     console.log('세션변수설정완료');
+                    console.log(req.session.displayName);
                     res.json({response : "ok"});
                 }
             });
