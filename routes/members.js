@@ -50,9 +50,9 @@ route.route('/addInfo')
     })
     .post(function (req,res){
         console.log("들어왔음");
-        var email = req.params.email;
-        var nickname = req.params.nickname;
-        var major1 = req.params.major1;
+        var email = req.query.email;
+        var nickname = req.body.nickname;
+        var major1 = req.param('major1');
         var major2 = req.params.major2;
         var major3 = req.params.major3;
         console.log(email, nickname, major1);
