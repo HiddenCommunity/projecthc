@@ -52,8 +52,8 @@ route.get('/confirm', function(req,res) {
 });
 
 //이메일 인증 완료 후, 안드로이드에서 '인증완료'버튼을 눌렀을 때. db 에서 인증한 이메일이 있는지 체크
-//실제로는 post여야함.
-route.get('/validate/:email', function(req,res) {
+//테스트 : get
+route.post('/validate/:email', function(req,res) {
     var email = req.params.email;
     console.log(email);
     //DB에 해당 이메일이 들어있나 체크.
@@ -70,7 +70,6 @@ route.get('/validate/:email', function(req,res) {
                 return;
             }
             console.log(member);
-            //암호화했던 것을 풀어서 확인하는 절차 넣어야할지고민중..
             res.json({response: "ok"});
         }
     });

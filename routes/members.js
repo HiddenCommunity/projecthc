@@ -24,19 +24,22 @@ route.use(session({
 }));
 
 //첫 로딩화면에서 요청해야할 것.
-route.get('/login', function(req,res) {
+//test:get
+route.post('/login', function(req,res) {
    if(req.session.login){ //값이 있으면
        console.log(req.session.login);
        console.log('자동로그인 완료');
+       res.json({response:"board"});
        res.render('boards/new'); //게시판 페이지로 이동
    }else{
        console.log('이메일 계정 입력화면으로 이동');
+       res.json({response:"email"});
        res.redirect('/members/new'); //게시판 페이지로 이동
 
    }
 })
 
-//이메일 계정 입력
+//이메일 계정 입력 <-테스트용
 route.get('/new', function(req, res){
    //렌더링할 라우트. /new 요청을 하면, view/members/new.jade 파일이 HTML형식으로 렌더링된다.
    res.render('members/new', { title: 'Hidden Community !' });
@@ -71,6 +74,7 @@ route.route('/addInfo')
                     console.log('[성공] 회원 정보 추가/수정 완료!');
                     console.log(req.session.login);
                     req.session.login="ok";  //세션에 변수를 설정해준다.
+                    req.session.displayName = nickname;
                     console.log(req.session.login);
                     console.log('세션변수설정완료');
                     res.json({response : "ok"});
