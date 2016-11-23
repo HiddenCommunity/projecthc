@@ -50,12 +50,12 @@ route.route('/addInfo')
     })
     .post(function (req,res){
         console.log("들어왔음");
-        var email = req.params.email;
+        var email = req.param('email');
         var nickname = req.param('nickname');
-        var major1 = req.body.major1;
-        var major2 = req.body.major2;
-        var major3 = req.body.major3;
-        console.log(nickname);
+        var major1 = req.param('major1');
+        var major2 = req.param('major2');
+        var major3 = req.param('major3');
+        console.log(email, nickname, major1);
         //이메일을 찾아서
         mongoose.model('Member').findOne({'email': email }, function (err, member) {
             //update it
