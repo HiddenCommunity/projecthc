@@ -51,10 +51,10 @@ route.route('/addInfo')
     .post(function (req,res){
         console.log("들어왔음");
         var email = req.query.email;
-        var nickname = req.body.nickname;
-        var major1 = req.param('major1');
-        var major2 = req.params.major2;
-        var major3 = req.params.major3;
+        var nickname = req.query.nickname;
+        var major1 = req.query.major1;
+        var major2 = req.query.major2;
+        var major3 = req.query.major3;
         console.log(email, nickname, major1);
         //이메일을 찾아서
         mongoose.model('Member').findOne({'email': email }, function (err, member) {
