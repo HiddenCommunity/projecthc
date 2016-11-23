@@ -16,8 +16,8 @@ var express = require('express'),
 * 조회수 많은 글 맨위에 보여주기
 * */
 //전공1게시판
-route.get('/:major', function(req, res){
-    var major = req.params.major;
+route.post('/:major', function(req, res){
+    var major = req.query.major;
     mongoose.model('Board').find({category: major}, function (err, boards) {
         if (err) {
             return console.error(err);
