@@ -49,12 +49,13 @@ route.route('/addInfo')
         res.render('members/edit', { title: '안드로이드에서 사용자 정보 입력하는 화면' });
     })
     .post(function (req,res){
+        console.log("들어왔음");
         var email = req.params.email;
         var nickname = req.params.nickname;
         var major1 = req.params.major1;
         var major2 = req.params.major2;
         var major3 = req.params.major3;
-
+        console.log(nickname);
         //이메일을 찾아서
         mongoose.model('Member').findOne({'email': email }, function (err, member) {
             //update it
