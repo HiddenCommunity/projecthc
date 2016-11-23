@@ -15,7 +15,7 @@ route.use(cookieParser());
 route.use(session({
     secret : '@345a!d^f$h%a12&*#%',  // 암호화 키
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 7 //쿠키유효기간 : 1주일
+         maxAge: 1000 * 60 * 60 * 24 * 7 //쿠키유효기간 : 1주일
     },
     store : store,
     resave : false,  //접속할 때마다 새롭게 발급할 것인지
@@ -25,7 +25,7 @@ route.use(session({
 //첫 로딩화면에서 요청해야할 것.
 //test:get
 route.post('/login', function(req,res) {
-   if(req.session.login){ //값이 있으면
+   if(req.session.login=='ok'){ //값이 있으면
        console.log(req.session.login);
        console.log('자동로그인 완료');
        res.json({response:"board"});
@@ -49,13 +49,12 @@ route.route('/addInfo')
         res.render('members/edit', { title: '안드로이드에서 사용자 정보 입력하는 화면' });
     })
     .post(function (req,res){
-        console.log("들어왔음");
         var email = req.query.email;
         var nickname = req.query.nickname;
         var major1 = req.query.major1;
         var major2 = req.query.major2;
         var major3 = req.query.major3;
-        console.log(email, nickname, major1);
+        //console.log(email, nickname, major1);
         //이메일을 찾아서
         mongoose.model('Member').findOne({'email': email }, function (err, member) {
             //update it
@@ -76,7 +75,7 @@ route.route('/addInfo')
                     console.log(req.session.login);
                     console.log('세션변수설정완료');
                     console.log(req.session.displayName);
-                    res.json({response : "ok"});
+                    res.json({session_id : req.session._id});
                 }
             });
         })
