@@ -76,7 +76,7 @@ route.route('/addInfo')
                     //console.log('세션변수설정완료');
                     //console.log(req.session.displayName);
                     console.log(req.session.id);
-                    req.session.member_id = eval(member_id);
+                    req.session.member_id = eval(member._id);
                     console.log(req.session.member_id);
                     res.json(req.session);
                     //res.json({response : "ok"});
