@@ -24,16 +24,16 @@ route.use(session({
 
 //첫 로딩화면에서 요청해야할 것.
 //test:get
-route.get('/login', function(req,res) {
+route.post('/login', function(req,res) {
    if(req.session.login=='ok'){ //값이 있으면
        console.log(req.session.login);
        console.log('자동로그인 완료');
-       //res.json({response:"board"});
-       res.render('boards/new');  //게시판 페이지로 이동
+       res.json({response:"board"});
+       //res.render('boards/new');  //게시판 페이지로 이동
    }else{
        console.log('이메일 계정 입력화면으로 이동');
-       //res.json({response:"email"});
-       res.render('members/new');  //게시판 페이지로 이동
+       res.json({response:"email"});
+       //res.render('members/new');  //게시판 페이지로 이동
    }
 })
 //
