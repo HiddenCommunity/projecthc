@@ -45,12 +45,12 @@ route.get('/new', function(req, res){
 });
 
 //안드로이드에서 아이디, 패스워드 입력.
-route.route('/addInfo')
+route.route('/addInfo/:email')
     .get(function (req, res){  //테스트용 코드
         res.render('members/edit', { title: '안드로이드에서 사용자 정보 입력하는 화면' });
     })
     .post(function (req,res){
-        var email = req.body.email;
+        var email = req.params.email;
         //var password = req.param('password');
         var nickname = req.body.nickname;
         var major1 = req.body.major1;
