@@ -75,7 +75,9 @@ route.route('/addInfo')
                     console.log(req.session.login);
                     console.log('세션변수설정완료');
                     console.log(req.session.displayName);
-                    res.json({session_id : req.session._id});
+                    var id = req.session._id + '';
+                    console.log(id);
+                    res.json({session_id : id});
                 }
             });
         })
