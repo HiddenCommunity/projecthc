@@ -30,12 +30,12 @@ route.post('/:major', function(req, res){
 });
 
 //POST 새 게시글 작성
-route.route('/:major/new')
+route.route('/new')
     .get(function(req, res){
         res.render('boards/new');
     })
     .post(function(req, res) {
-        var category = req.params.major;
+        var category = req.query.major;
         var author = req.query.nickname;
         var title = req.query.title;
         var body = req.query.body;
