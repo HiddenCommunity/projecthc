@@ -35,7 +35,7 @@ route.post('/:major', function(req, res){
 //         console.log("아제발좀");
 //     })
 
-route.route('/new', function(req,res){
+route.post('/new', function(req,res){
 
         var category = req.body.major;
         var author = req.body.author;
