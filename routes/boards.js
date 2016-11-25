@@ -36,30 +36,25 @@ route.post('/:major', function(req, res){
 //     })
 
 route.post('/new', function(req,res){
-
-        var category = req.body.major;
-        var author = req.body.author;
-        var title = req.body.title;
-        var body = req.body.body;
+        // var category = req.body.major;
+        // var author = req.body.author;
+        // var title = req.body.title;
+        // var body = req.body.body;
        // var tag = req.body.tag;
-
-        // var category = req.query.major;
-        // var author = req.query.author;
-        // var title = req.query.title;
-        // var body = req.query.body;
-        // var tag = req.query.tag;
-        console.log("2");
+        console.log('요청경로는 제대로 들어온것임');
+        var category = req.query.major;
+        var author = req.query.author;
+        var title = req.query.title;
+        var body = req.query.body;
+        //var tag = req.query.tag;
+        console.log("query내용도 잘 받아왔음");
+        console.log(category, author, title, body);
         mongoose.model('Board').create({
             category : category,
             author : author,
             title : title,
-            body : body,
+            body : body
         //    tag : tag,
-            meta : {
-                hit:0,
-                like:0,
-                hate:0
-            }
             //comments : []  //처음생성될 때는 댓글이없음.
         }, function (err, board) {
             if (err) {
