@@ -35,12 +35,13 @@ route.route('/new')
         res.render('boards/new');
     })
     .post(function(req, res) {
+        console.log("1");
         var category = req.query.major;
         var author = req.query.author;
         var title = req.query.title;
         var body = req.query.body;
         var tag = req.query.tag;
-
+        console.log("2");
         mongoose.model('Board').create({
             category : category,
             author : author,
