@@ -23,19 +23,19 @@ route.use(cookieParser());
 // }));
 
 //첫 로딩화면에서 요청해야할 것.
-//test:get
-route.post('/login', function(req,res) {
-   if(req.session.login=='ok'){ //값이 있으면
-       console.log(req.session.login);
-       console.log('자동로그인 완료');
-       res.json({response:"board"});
-       //res.render('boards/new');  //게시판 페이지로 이동
-   }else{
-       console.log('이메일 계정 입력화면으로 이동');
-       res.json({response:"email"});
-       //res.render('members/new');  //게시판 페이지로 이동
-   }
-})
+//(웹브라우저일 경우 세션유지하는 코드)
+// route.post('/login', function(req,res) {
+//    if(req.session.login=='ok'){ //값이 있으면
+//        console.log(req.session.login);
+//        console.log('자동로그인 완료');
+//        res.json({response:"board"});
+//        //res.render('boards/new');  //게시판 페이지로 이동
+//    }else{
+//        console.log('이메일 계정 입력화면으로 이동');
+//        res.json({response:"email"});
+//        //res.render('members/new');  //게시판 페이지로 이동
+//    }
+// })
 //
 // //이메일 계정 입력 <-테스트용
 // route.get('/new', function(req, res){
@@ -50,20 +50,16 @@ route.route('/addInfo')
     })
     .post(function (req,res){
         //  /addInfo/?email=" "
-        var email = req.query.email;
-        var password = req.query.password;
-        var nickname = req.query.nickname;
-        var major1 = req.query.major1;
-        var major2 = req.query.major2;
-        var major3 = req.query.major3;
-        //테스트용
-        // var email = req.body.email;
-        // var nickname = req.body.nickname;
-        // var major1 = req.body.major1;
-        // var major2 = req.body.major2;
-        // var major3 = req.body.major3;
+        var infoObj = JSON.parse(res);
+        var email = infoObj.email;
+        var password = infoObj.password;
+        var nickname = infoObj.nickname;
+        var major1 = infoObj.major1;
+        var major2 = infoObj.major2;
+        var major3 = infoObj.major3;
+
         var id = "";
-        console.log(email, nickname, major1);
+        console.log(email, nickname, major1, major2, major3);
         //이메일을 찾아서
         mongoose.model('Member').findOne({'email': email }, function (err, member) {
             id = member._id;
@@ -81,17 +77,8 @@ route.route('/addInfo')
                 }
                 else {
                     console.log('[성공] 회원 정보 추가/수정 완료!');
-                    //console.log(req.session.login);
-                    req.session.login="ok";  //세션에 변수를 설정해준다.
-                    req.session.displayName = nickname;
-                    //console.log(req.session.login);
-                    //console.log('세션변수설정완료');
-                    //console.log(req.session.displayName);
-                    console.log('req.session.id : ' + req.session.id);
-                    req.session.member_id = id;
-                    console.log('req.session.member_id : ' + req.session.member_id);
-                    console.log(req.session);
-                    res.json(req.session);
+                    //req.session.login="ok";  //세션에 변수를 설정해준다. 웹브라우저일때 해당되는 코드.
+                    res.json(member);
                 }
             });
         })
