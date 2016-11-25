@@ -49,14 +49,13 @@ route.route('/addInfo')
         res.render('members/edit', { title: '안드로이드에서 사용자 정보 입력하는 화면' });
     })
     .post(function (req,res){
-        //  /addInfo/?email=" "
-        var infoObj = JSON.parse(res);
+        var infoObj = JSON.parse(req);
         var email = infoObj.email;
         var password = infoObj.password;
         var nickname = infoObj.nickname;
         var major1 = infoObj.major1;
-        var major2 = infoObj.major2;
-        var major3 = infoObj.major3;
+        var major2 = "";
+        var major3 = "";
 
         var id = "";
         console.log(email, nickname, major1, major2, major3);
