@@ -36,7 +36,7 @@ route.route('/:major/new')
     })
     .post(function(req, res) {
         var category = req.params.major;
-        var author = ''; //세션에서 받아와야함
+        var author = req.query.nickname;
         var title = req.query.title;
         var body = req.query.body;
 
@@ -45,13 +45,12 @@ route.route('/:major/new')
             author : author,
             title : title,
             body : body,
-          //  date : date,
             meta : {
                 hit:0,
                 like:0,
                 hate:0
-            },
-            comments : []  //처음생성될 때는 댓글이없음.
+            }
+            //comments : []  //처음생성될 때는 댓글이없음.
         }, function (err, board) {
             if (err) {
                 res.send("[error] 게시글 작성 실패");
