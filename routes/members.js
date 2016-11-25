@@ -2,25 +2,25 @@ var express = require('express'),
     route = express.Router(),
     mongoose = require('mongoose'),
     cookieParser = require('cookie-parser'),
-    session = require('express-session'),
-    MongoDBStore = require('connect-mongodb-session')(session),
-    store = new MongoDBStore(
-        {
-            uri : 'mongodb://localhost:27017/hcDB',
-            collection : 'sessions'
-        }
-    );
+    session = require('express-session');
+    // MongoDBStore = require('connect-mongodb-session')(session),
+    // store = new MongoDBStore(
+    //     {
+    //         uri : 'mongodb://localhost:27017/hcDB',
+    //         collection : 'sessions'
+    //     }
+    // );
 
 route.use(cookieParser());
-route.use(session({
-    secret : '@345a!d^f$h%a12&*#%',  // 암호화 키
-    cookie: {
-         maxAge: 1000 * 60 * 60 * 24 * 7 //쿠키유효기간 : 1주일
-    },
-    store : store,
-    resave : false,  //접속할 때마다 새롭게 발급할 것인지
-    saveUninitialized: true
-}));
+// route.use(session({
+//     secret : '@345a!d^f$h%a12&*#%',  // 암호화 키
+//     cookie: {
+//          maxAge: 1000 * 60 * 60 * 24 * 7 //쿠키유효기간 : 1주일
+//     },
+//     store : store,
+//     resave : false,  //접속할 때마다 새롭게 발급할 것인지
+//     saveUninitialized: true
+// }));
 
 //첫 로딩화면에서 요청해야할 것.
 //test:get
@@ -49,7 +49,9 @@ route.route('/addInfo')
         res.render('members/edit', { title: '안드로이드에서 사용자 정보 입력하는 화면' });
     })
     .post(function (req,res){
+        //  /addInfo/?email=" "
         var email = req.query.email;
+        var password = req.query.password;
         var nickname = req.query.nickname;
         var major1 = req.query.major1;
         var major2 = req.query.major2;
@@ -69,6 +71,7 @@ route.route('/addInfo')
             //update it
             member.update({
                 nickname : nickname,
+                password : password,
                 major1 : major1,
                 major2 : major2,
                 major3 : major3
@@ -89,7 +92,6 @@ route.route('/addInfo')
                     console.log('req.session.member_id : ' + req.session.member_id);
                     console.log(req.session);
                     res.json(req.session);
-                    //res.json({response : "ok"});
                 }
             });
         })

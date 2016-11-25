@@ -18,7 +18,9 @@ var express = require('express'),
 //전공1게시판
 route.post('/:major', function(req, res){
     var major = req.query.major;
-    mongoose.model('Board').find({category: major}, function (err, boards) {
+//    mongoose.model('Board').find({category: major}, function (err, boards) {
+    mongoose.model('Board').find({category: major}).sort({date:-1}).exec(function (err, boards) {
+    //db에서 날짜 순으로 데이터들을 가져옴
         if (err) {
             return console.error(err);
         } else {
@@ -28,23 +30,22 @@ route.post('/:major', function(req, res){
 });
 
 //POST 새 게시글 작성
-route.route('/new')
+route.route('/:major/new')
     .get(function(req, res){
         res.render('boards/new');
     })
     .post(function(req, res) {
-        var category = req.body.category;
-        var author = req.session.displayName;
-        var title = req.body.title;
-        var body = req.body.body;
-        var date = req.body.date;
-        console.log(category, author, title);
+        var category = req.params.major;
+        var author = ''; //세션에서 받아와야함
+        var title = req.query.title;
+        var body = req.query.body;
+
         mongoose.model('Board').create({
             category : category,
             author : author,
             title : title,
             body : body,
-            date : date,
+          //  date : date,
             meta : {
                 hit:0,
                 like:0,
@@ -91,93 +92,62 @@ route.param('id', function(req, res, next, id) {
     });
 });
 
-// /boards/582674abcdf9fa75d82270d9
-route.route('/:id')
-    .get(function(req, res) {
-        var id = req.id;
-        mongoose.model('Board').findById(req.id, function (err, board) {
-            if (err) {
-                console.log('GET [에러]: 검색 실패! ' + err);
-            } else {
-                console.log('GET [성공] 검색한 ID: ' + board._id);
-                res.res.json(board);
-            }
-        });
+//글을 읽는 부분
+route.post('/view/:id', function(req, res){
+    var board_id = req.id;
+    mongoose.model('Board').findById(board_id, function (err, board) {
+        if (err) {
+            console.log('[실패] 게시글 읽기 실패 에러 : ' + err);
+        } else {
+            console.log('[성공] 검색한 게시글 ID: ' + board._id);
+            board.meta.hit += 1; //조회수 +1
+            console.log('[성공] 조회수 업데이트. 현재 조회수 : ' + board.meta.hit);
+            res.json(board);
+        }
     });
+});
 
-//http://52.78.207.133:3000/boards/582674abcdf9fa75d82270d9/edit
-route.route('/:id/edit')
-//GET Mongo ID로 board 하나 검색
-    .get(function(req, res) {
-        mongoose.model('Board').findById(req.id, function (err, board) {
+
+//글 수정
+// /boards/edit/582674abcdf9fa75d82270d9
+route.post('/edit/:id', function(req, res) {
+    var newTitle = req.query.title;
+    var newBody = req.query.body;
+    var newDate = Date.now();
+    var board_id = req.id;
+    // ID 로 해당 board 찾기
+    mongoose.model('Board').findById(board_id, function (err, board) {
+        board.update({
+            title: newTitle,
+            body: newBody,
+            date: newDate
+        }, function (err, board) {
             if (err) {
-                console.log('GET [에러] : 검색 실패! ' + err);
+                res.send("[실패] Updating 실패: " + err);
             } else {
-                //검색성공하면 해당 board 리턴
-                console.log('GET Retrieving ID: ' + board._id);
-                //var date = board.date.toISOString();
-                //date = date.substring(0, date.indexOf('T'));  날짜만 자름.
                 res.json(board);
             }
-        });
+        })
     })
-    //PUT ID 로 board UPDATE
-    .put(function(req, res) {
-        // Get form 의 "name" attributes
-        var title = req.body.title;
-        var body = req.body.body;
-        var date = Date.now();
-        // ID 로 해당 board 찾기
-        mongoose.model('Board').findById(req.id, function (err, board) {
-            board.update({
-                title : title,
-                body : body,
-                date : date
-            }, function (err, board) {
+})
+
+route.post('/delete/:id', function(req, res) {
+    //find member by ID
+    var board_id = req.id;
+    mongoose.model('Board').findById(board_id, function (err, board) {
+        if (err) {
+            return console.error(err);
+        } else {
+            board.remove(function (err, board) {
                 if (err) {
-                    res.send("[실패] Updating 실패: " + err);
+                    return console.error(err);
                 } else {
-                    res.format({
-                        html: function(){
-                            res.redirect("/boards/" + board._id);
-                        },
-                        //JSON responds showing the updated values
-                        json: function(){
-                            res.json(board);
-                        }
-                    });
+                    console.log('DELETE removing ID: ' + board._id);
+                    res.json({message: 'deleted', item: board});
                 }
             })
-        });
+        }
     })
-
-    //DELETE ID로 board 삭제
-    .delete(function (req, res){
-        //find member by ID
-        mongoose.model('Board').findById(req.id, function (err, board) {
-            if (err) {
-                return console.error(err);
-            } else {
-                board.remove(function (err, board) {
-                    if (err) {
-                        return console.error(err);
-                    } else {
-                        console.log('DELETE removing ID: ' + board._id);
-                        res.format({
-                            html: function(){
-                                res.redirect("/boards"); //index.jade
-                            },
-                            json: function(){
-                                res.json({message : 'deleted',
-                                    item : board
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    });
-
+})
 
 module.exports = route;

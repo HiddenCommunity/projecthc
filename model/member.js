@@ -5,7 +5,6 @@ var memberSchema = new Schema({
     email: String,
     nickname: String,
     password : String,
-    connectKey: String,
 //    majors: [String],
     major1 : String,
     major2 : String,
