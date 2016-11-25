@@ -49,17 +49,21 @@ route.route('/addInfo')
         res.render('members/edit', { title: '안드로이드에서 사용자 정보 입력하는 화면' });
     })
     .post(function (req,res){
-        console.log(req);
-        var infoObj = JSON.parse(req.query);
-        var email = infoObj.email;
-        var password = infoObj.password;
-        var nickname = infoObj.nickname;
-        var major1 = infoObj.major1;
-        var major2 = "";
-        var major3 = "";
-
+        //  /addInfo/?email=" "
+        var email = req.query.email;
+        var password = req.query.password;
+        var nickname = req.query.nickname;
+        var major1 = req.query.major1;
+        var major2 = req.query.major2;
+        var major3 = req.query.major3;
+        //테스트용
+        // var email = req.body.email;
+        // var nickname = req.body.nickname;
+        // var major1 = req.body.major1;
+        // var major2 = req.body.major2;
+        // var major3 = req.body.major3;
         var id = "";
-        console.log(email, nickname, major1, major2, major3);
+        console.log(email, nickname, major1);
         //이메일을 찾아서
         mongoose.model('Member').findOne({'email': email }, function (err, member) {
             id = member._id;
@@ -77,8 +81,11 @@ route.route('/addInfo')
                 }
                 else {
                     console.log('[성공] 회원 정보 추가/수정 완료!');
-                    //req.session.login="ok";  //세션에 변수를 설정해준다. 웹브라우저일때 해당되는 코드.
-                    res.json(member);
+                    //console.log(req.session.login);
+                    //req.session.login="ok";  //세션에 변수를 설정해준다.
+                    //console.log(req.session.login);
+                    //console.log('세션변수설정완료');
+                    res.json({response:"ok"});
                 }
             });
         })
