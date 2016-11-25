@@ -36,15 +36,17 @@ route.route('/new')
     })
     .post(function(req, res) {
         var category = req.query.major;
-        var author = req.query.nickname;
+        var author = req.query.author;
         var title = req.query.title;
         var body = req.query.body;
+        var tag = req.query.tag;
 
         mongoose.model('Board').create({
             category : category,
             author : author,
             title : title,
             body : body,
+            tag : tag,
             meta : {
                 hit:0,
                 like:0,

@@ -7,6 +7,7 @@ var boardSchema = new Schema({
     title: String,
     body: String,
     date: { type: Date, default: Date.now },
+    tag : [],
     meta: {
         hit: {type:Number, default:0},
         like: {type:Number, default:0},
