@@ -5,10 +5,12 @@ block content
         #{title}
     form#formAddBoard(name="createBoard",method="post",action="/boards/new")
         p Category:
-            input#inputCategory(type="text", name="category")
+            input#inputCategory(type="text", name="major")
         p Title :
             input#inputTitle(type="text", name="title")
         p Body :
             input#inputBody(type="text", name="body")
+        p Tag :
+                input#inpuTag(type="text", name="tag")
         p
             button#btnSubmit(type="submit") submit

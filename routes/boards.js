@@ -18,8 +18,7 @@ var express = require('express'),
 //전공1게시판
 route.post('/:major', function(req, res){
     var major = req.query.major;
-//    mongoose.model('Board').find({category: major}, function (err, boards) {
-    mongoose.model('Board').find({category: major}).sort({date:-1}).exec(function (err, boards) {
+    mongoose.model('Board').find({category: major}, function (err, boards) {
     //db에서 날짜 순으로 데이터들을 가져옴
         if (err) {
             return console.error(err);
@@ -30,24 +29,32 @@ route.post('/:major', function(req, res){
 });
 
 //POST 새 게시글 작성
-route.route('/new')
-    .get(function(req, res){
-        res.render('boards/new');
-    })
-    .post(function(req, res) {
-        console.log("1");
-        var category = req.query.major;
-        var author = req.query.author;
-        var title = req.query.title;
-        var body = req.query.body;
-        var tag = req.query.tag;
+// route.route('/new')
+//     .get(function(req, res){
+//         res.render('boards/new');
+//         console.log("아제발좀");
+//     })
+
+route.route('/new', function(req,res){
+
+        var category = req.body.major;
+        var author = req.body.author;
+        var title = req.body.title;
+        var body = req.body.body;
+       // var tag = req.body.tag;
+
+        // var category = req.query.major;
+        // var author = req.query.author;
+        // var title = req.query.title;
+        // var body = req.query.body;
+        // var tag = req.query.tag;
         console.log("2");
         mongoose.model('Board').create({
             category : category,
             author : author,
             title : title,
             body : body,
-            tag : tag,
+        //    tag : tag,
             meta : {
                 hit:0,
                 like:0,
