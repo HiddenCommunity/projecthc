@@ -111,7 +111,7 @@ route.route('/read/:id')
                 console.log('[성공] 조회수 업데이트. 현재 조회수 : ' + board.meta.hit);
                 //var boardObj = JSON.parse(board);
                 var boardObj = JSON.stringify(board);
-                res.json(boardObj);
+                res.send(boardObj);
             }
         })
     })
