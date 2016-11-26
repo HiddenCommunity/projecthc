@@ -47,7 +47,7 @@ route.route('/new')
                 console.log('실패');
             } else { //게시글 생성 성공
                 console.log('POST 게시글 작성 성공 ' + board._id);
-                res.json({boardId : board._id.toString()});
+                res.json(board);
                 console.log(board);
             }
         });
