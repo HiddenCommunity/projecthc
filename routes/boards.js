@@ -26,7 +26,7 @@ route.route('/new')
         // var author = req.body.author;
         // var title = req.body.title;
         // var body = req.body.body;
-        //var tagArr = req.body.tag.split(' ');
+        // var tagArr = req.body.tag.split(' ');
 
         var category = req.query.major;
         var author = req.query.author;
@@ -47,7 +47,7 @@ route.route('/new')
                 console.log('실패');
             } else { //게시글 생성 성공
                 console.log('POST 게시글 작성 성공 ' + board.title);
-                res.json({response : "ok"});
+                res.json({boardId : board._id});
                 console.log(board);
             }
         });
@@ -81,7 +81,7 @@ route.route('/list/:major')
 
 //READ
 route.route('/read/:id')
-    .get(function(req, res){
+    .get(function(req, res) {
         var board_id = req.id;
         mongoose.model('Board').findById(board_id, function (err, board) {
             if (err) {
@@ -91,9 +91,22 @@ route.route('/read/:id')
                 board.meta.hit += 1; //조회수 +1
                 console.log('[성공] 조회수 업데이트. 현재 조회수 : ' + board.meta.hit);
                 res.json(board);
-        }
-    });
-});
+            }
+        })
+    })
+    .post(function(req, res){
+        var board_id = req.id;
+        mongoose.model('Board').findById(board_id, function (err, board) {
+            if (err) {
+                console.log('[실패] 게시글 읽기 실패 에러 : ' + err);
+            } else {
+                console.log('[성공] 검색한 게시글 ID: ' + board._id);
+                board.meta.hit += 1; //조회수 +1
+                console.log('[성공] 조회수 업데이트. 현재 조회수 : ' + board.meta.hit);
+                res.json(board);
+            }
+        })
+    })
 
 // req.param 중에 id가 있을 때,에러 체킹 :id 를 가지고 db에 들어있는지 확인.
 // route.param('id', function(req, res, next, id) {
