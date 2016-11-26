@@ -107,7 +107,7 @@ route.route('/read/:id')
         })
     })
     .post(function(req, res){
-        var board_id = req.params.id;
+        var board_id = req.query.id;
         mongoose.model('Board').findById(board_id, function (err, board) {
             if (err) {
                 console.log('[실패] 게시글 읽기 실패 에러 : ' + err);
