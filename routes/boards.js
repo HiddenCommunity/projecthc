@@ -22,11 +22,11 @@ route.route('/new')
         res.render('boards/new');
     })
     .post(function(req,res){
-        // var category = req.body.major;
-        // var author = req.body.author;
-        // var title = req.body.title;
-        // var body = req.body.body;
-        // var tagArr = req.body.tag.split(' ');
+    //     var category = req.body.major;
+    //     var author = req.body.author;
+    //     var title = req.body.title;
+    //     var body = req.body.body;
+    //     var tagArr = req.body.tag.split(' ');
 
         var category = req.query.major;
         var author = req.query.author;
@@ -47,7 +47,10 @@ route.route('/new')
                 console.log('실패');
             } else { //게시글 생성 성공
                 console.log('POST 게시글 작성 성공 ' + board._id);
-                res.json(board);
+                console.log(typeof  board._id);
+                console.log(typeof board._id.toString());
+                var id = board._id.toString();
+                res.json({boardId : id});
                 console.log(board);
             }
         });
