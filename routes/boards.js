@@ -49,9 +49,9 @@ route.route('/new')
                 console.log('POST 게시글 작성 성공 ' + board._id);
                 //console.log(typeof  board._id);
                 //console.log(typeof board._id.toString());
-                //id = board._id.toString();
+                var id = board._id.toString();
                 res.json(
-                    {response : '"' + board._id + '"'});
+                    {response : id});
                 //console.log(board);
             }
         });
