@@ -110,8 +110,17 @@ route.route('/read/:id')
                 board.meta.hit += 1; //조회수 +1
                 console.log('[성공] 조회수 업데이트. 현재 조회수 : ' + board.meta.hit);
                 //var boardObj = JSON.parse(board);
-                var boardObj = JSON.stringify(board);
-                res.send(boardObj);
+                res.json({
+                    category : board.category,
+                    author : board.author,
+                    title : board.title,
+                    body : board.body,
+                    comment : board.comment,
+                    hit : board.meta.hit,
+                    like : board.meta.like,
+                    hate : board.meta.hate,
+                    date : board.date
+                });
             }
         })
     })
