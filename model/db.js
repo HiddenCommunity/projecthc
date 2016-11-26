@@ -19,11 +19,12 @@ if (process.platform == "win32") {
             console.log("SSH connection error: " + error);
         }
         console.log('ssh connection initalizing');
+        mongoose.Promise = global.Promise;
         mongoose.connect('mongodb://localhost:27017/hcDB');
         console.log('data base connect complete');
     });
 } else {
-   // mongoose.Promise = global.Promise;
+    mongoose.Promise = global.Promise;
     mongoose.connect('mongodb://localhost:27017/hcDB');
 }
 

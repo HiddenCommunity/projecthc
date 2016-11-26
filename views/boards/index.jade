@@ -5,7 +5,7 @@ block content
     #{title}
   ul
     - each board, i in boards
-    li
+      li
       = board.category
       = board.author
       = board.title
@@ -13,7 +13,6 @@ block content
       = board.date
       = board.meta
       = board.comment
-      = board._id
       form(action='/boards/#{board._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
         input(type='hidden',value='DELETE',name='_method')
         button(type='submit').
