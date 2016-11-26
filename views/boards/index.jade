@@ -13,11 +13,11 @@ block content
       = board.date
       = board.meta
       = board.comment
-      form(action='/boards/#{board._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
+      form(action='/boards/edit/#{board._id}',method='post',enctype='application/x-www-form-urlencoded')
         input(type='hidden',value='DELETE',name='_method')
         button(type='submit').
           Delete
       p
-        a(href='/boards/#{board._id}/edit') Edit
+        a(href='/boards/edit/#{board._id}') Edit
       p
-        a(href='/boards/#{board._id}') Show
+        a(href='/boards/read/#{board._id}') Show

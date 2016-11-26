@@ -98,7 +98,11 @@ route.route('/read/:id')
                     else
                         console.log('[성공] 조회수 업데이트. 현재 조회수 : ' + board.meta.hit);
                 });
-                res.json(board);
+                res.format({
+                    json: function(){
+                        res.json({board : board});
+                    }
+                });
             }
         })
     })
@@ -123,6 +127,58 @@ route.route('/read/:id')
             }
         })
     })
+
+// UPDATE
+route.route('/edit/:id')
+    .get(function(req, res) {
+        var board_id = req.params.id;
+        mongoose.model('Board').findById(board_id, function (err, board) {
+            if (err) {
+                console.log('GET 해당 게시글 검색 실패 ' + err);
+            } else {
+                console.log('GET 게시글 검색 성공 id : ' + board._id);
+                var board_date = board.date.toISOString();
+                board_date = board_date.substring(0, board_date.indexOf('T'));
+                res.format({
+                    //HTML response will render the 'edit.jade' template
+                    html: function(){
+                        res.render('boards/edit', {
+                            title: '글 읽기 화면',
+                            "date" : board_date,
+                            "board" : board
+                        });
+                    },
+                    json: function(){
+                        res.json(board);
+                    }
+                });
+            }
+        });
+    })
+
+    .post(function(req, res) {
+        var board_id = req.params.id;
+        var newTitle = req.query.title;
+        var newBody = req.query.body;
+        //var newDate = Date.now();
+        var board_id = req.id;
+        // ID 로 해당 board 찾기
+        mongoose.model('Board').findById(board_id, function (err, board) {
+            board.update({
+                title: newTitle,
+                body: newBody
+                //date: newDate
+            }, function (err, board) {
+                if (err) {
+                    res.send("[실패] 글 수정 실패: " + err);
+                } else {
+                    res.json(board);
+                    console.log('[성공] 글 수정 성공');
+                }
+            })
+        })
+    })
+
 
 // req.param 중에 id가 있을 때,에러 체킹 :id 를 가지고 db에 들어있는지 확인.
 // route.param('id', function(req, res, next, id) {
@@ -156,28 +212,7 @@ route.route('/read/:id')
 
 //
 //
-// //글 수정
-// // /boards/edit/582674abcdf9fa75d82270d9
-// route.post('/edit/:id', function(req, res) {
-//     var newTitle = req.query.title;
-//     var newBody = req.query.body;
-//     var newDate = Date.now();
-//     var board_id = req.id;
-//     // ID 로 해당 board 찾기
-//     mongoose.model('Board').findById(board_id, function (err, board) {
-//         board.update({
-//             title: newTitle,
-//             body: newBody,
-//             date: newDate
-//         }, function (err, board) {
-//             if (err) {
-//                 res.send("[실패] Updating 실패: " + err);
-//             } else {
-//                 res.json(board);
-//             }
-//         })
-//     })
-// })
+//
 //
 // route.post('/delete/:id', function(req, res) {
 //     //find member by ID
