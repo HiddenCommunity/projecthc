@@ -94,7 +94,8 @@ route.route('/read/:id')
                 console.log('[성공] 검색한 게시글 ID: ' + board._id);
                 board.meta.hit += 1; //조회수 +1
                 console.log('[성공] 조회수 업데이트. 현재 조회수 : ' + board.meta.hit);
-                res.json(board);
+                var boardObj = JSON.parse(board);
+                res.json(boardObj);
             }
         })
     })
