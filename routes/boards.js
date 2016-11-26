@@ -22,17 +22,17 @@ route.route('/new')
         res.render('boards/new');
     })
     .post(function(req,res){
-        var category = req.body.major;
-        var author = req.body.author;
-        var title = req.body.title;
-        var body = req.body.body;
-        var tagArr = req.body.tag.split(' ');
+        // var category = req.body.major;
+        // var author = req.body.author;
+        // var title = req.body.title;
+        // var body = req.body.body;
+        // var tagArr = req.body.tag.split(' ');
 
-        // var category = req.query.major;
-        // var author = req.query.author;
-        // var title = req.query.title;
-        // var body = req.query.body;
-        // var tagArr = req.query.tag.split(' ');
+        var category = req.query.major;
+        var author = req.query.author;
+        var title = req.query.title;
+        var body = req.query.body;
+        var tagArr = req.query.tag.split(' ');
         console.log(tagArr);
 
         mongoose.model('Board').create({
