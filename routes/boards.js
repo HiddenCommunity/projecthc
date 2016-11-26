@@ -47,11 +47,11 @@ route.route('/new')
                 console.log('실패');
             } else { //게시글 생성 성공
                 console.log('POST 게시글 작성 성공 ' + board._id);
-                console.log(typeof  board._id);
-                console.log(typeof board._id.toString());
-                var id = board._id.toString();
-                res.json({boardId : "id"});
-                console.log(board);
+                //console.log(typeof  board._id);
+                //console.log(typeof board._id.toString());
+                //var id = board._id.toString();
+                res.json({response : "ok"});
+                //console.log(board);
             }
         });
     });
