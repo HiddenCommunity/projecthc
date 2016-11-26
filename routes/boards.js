@@ -93,8 +93,12 @@ route.route('/read/:id')
             } else {
                 console.log('[성공] 검색한 게시글 ID: ' + board._id);
                 board.meta.hit += 1; //조회수 +1
-                console.log('[성공] 조회수 업데이트. 현재 조회수 : ' + board.meta.hit);
-                res.json({board : board});
+                board.save(function(err){ // 변화된 조횟수 저장
+                    if(err) throw err;
+                    else
+                        console.log('[성공] 조회수 업데이트. 현재 조회수 : ' + board.meta.hit);
+                });
+                res.json(board);
             }
         })
     })
@@ -106,15 +110,15 @@ route.route('/read/:id')
             } else {
                 console.log('[성공] 검색한 게시글 ID: ' + board._id);
                 board.meta.hit += 1; //조회수 +1
-                console.log('[성공] 조회수 업데이트. 현재 조회수 : ' + board.meta.hit);
-                res.json({
-                    category : board.category,
-                    author : board.author,
-                    title : board.title,
-                    body : board.body,
-                    hit : board.meta.hit,
-                    like : board.meta.like,
-                    date : board.date
+                board.save(function(err){ // 변화된 조횟수 저장
+                    if(err) throw err;
+                    else
+                        console.log('[성공] 조회수 업데이트. 현재 조회수 : ' + board.meta.hit);
+                });
+                res.format({
+                    json: function(){
+                        res.json(board);
+                    }
                 });
             }
         })
