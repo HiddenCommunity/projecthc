@@ -50,7 +50,7 @@ route.route('/new')
                 console.log(typeof  board._id);
                 console.log(typeof board._id.toString());
                 var id = board._id.toString();
-                res.json({boardId : id});
+                res.json({boardId : "id"});
                 console.log(board);
             }
         });
