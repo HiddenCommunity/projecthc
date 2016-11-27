@@ -68,10 +68,11 @@ route.route('/list/:major')
                 return console.error(err);
             } else {
                 res.format({
-                    html: function(){
-                        res.render('boards/index', {title: major,"boards": boards});
-                    },
+                   // html: function(){
+                   //     res.render('boards/index', {title: major,"boards": boards});
+                   // },
                     json: function(){
+                        res.header('Content-Type', 'application/json; charset=utf-8');
                         res.json(boards);
                     }
                 });
@@ -92,6 +93,7 @@ route.route('/list/:major')
             } else {
                 res.format({
                     json: function(){
+                        res.header('Content-Type', 'application/json; charset=utf-8');
                         res.json(boards);
                     }
                 });
