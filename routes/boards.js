@@ -22,11 +22,11 @@ route.route('/new')
         res.render('boards/new');
     })
     .post(function(req,res){
-    //     var category = req.body.major;
-    //     var author = req.body.author;
-    //     var title = req.body.title;
-    //     var body = req.body.body;
-    //     var tagArr = req.body.tag.split(' ');
+        // var category = req.body.major;
+        // var author = req.body.author;
+        // var title = req.body.title;
+        // var body = req.body.body;
+        // var tagArr = req.body.tag.split(' ');
 
         var category = req.query.major;
         var author = req.query.author;
@@ -86,7 +86,8 @@ route.route('/list/:major')
 //READ
 route.route('/read/:id')
     .get(function(req, res) {
-        var board_id = req.params.id;
+        //var board_id = req.params.id;
+        var board_id = req.id;
         mongoose.model('Board').findById(board_id, function (err, board) {
             if (err) {
                 console.log('[실패] 게시글 읽기 실패 에러 : ' + err);
@@ -107,7 +108,8 @@ route.route('/read/:id')
         })
     })
     .post(function(req, res){
-        var board_id = req.params.id;
+        var board_id = req.id;
+        ////var board_id = req.
         console.log(board_id);
         mongoose.model('Board').findById(board_id, function (err, board) {
             if (err) {
