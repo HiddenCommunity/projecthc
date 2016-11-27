@@ -61,24 +61,41 @@ route.route('/new')
 route.route('/list/:major')
     .get(function(req, res) {
         var major = req.params.major;
+
         mongoose.model('Board').find({category: major}).sort({date: -1}).exec(function (err, boards) {
             //db에서 날짜 순으로 데이터들을 가져옴
             if (err) {
                 return console.error(err);
             } else {
-                res.render('boards/index', {title: major,"boards": boards});
+                res.format({
+                    html: function(){
+                        res.render('boards/index', {title: major,"boards": boards});
+                    },
+                    json: function(){
+                        res.json(boards);
+                    }
+                });
+
+
             }
         })
     })
     //안드로이드에서 전공별 게시판 볼때
     .post(function(req, res) {
-        var major = req.query.major;
+        //var major = req.query.major;
+        var major = req.params.major;
+
         mongoose.model('Board').find({category: major}).sort({date: -1}).exec(function (err, boards) {
             //db에서 날짜 순으로 데이터들을 가져옴
             if (err) {
                 return console.error(err);
             } else {
-                res.json(boards);
+                res.format({
+                    json: function(){
+                        res.json(boards);
+                    }
+                });
+
             }
         })
     })
