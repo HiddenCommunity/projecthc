@@ -87,7 +87,7 @@ route.route('/list/:major')
 route.route('/read/:id')
     .get(function(req, res) {
         //var board_id = req.params.id;
-        var board_id = req.id;
+        var board_id = req.params.id;
         mongoose.model('Board').findById(board_id, function (err, board) {
             if (err) {
                 console.log('[실패] 게시글 읽기 실패 에러 : ' + err);
@@ -108,7 +108,7 @@ route.route('/read/:id')
         })
     })
     .post(function(req, res){
-        var board_id = req.id;
+        var board_id = req.params.id;
         ////var board_id = req.
         console.log(board_id);
         mongoose.model('Board').findById(board_id, function (err, board) {
