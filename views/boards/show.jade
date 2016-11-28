@@ -2,10 +2,25 @@ extends ../layout
 
 block content
   h1.
-    Infophoto #{board._id}
-  p Category: #{board.nickname}
+    #{board._id}
+  p Category: #{board.category}
   p Title: #{board.title}
   p Body: #{board.body}
   p Hits: #{board.meta.hit}
   p Likes: #{board.meta.hate}
   p Hates: #{board.meta.like}
+
+  ul
+    - each comment, i in board.comment
+      li
+      = comment.author
+      = comment.body
+      = comment.date
+
+  form(name="createComment",method="post",action="/boards/comment/#{board._id}")
+    p Author:
+      input#inputAuthor(type="text", name="author")
+    p Body :
+      input#inputBody(type="text", name = "body")
+    p
+      button#btnSubmit(type="submit") submit
