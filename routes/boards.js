@@ -115,9 +115,9 @@ route.route('/read/:id')
                         console.log('GET [성공] 조회수 업데이트. 현재 조회수 : ' + board.meta.hit);
                 });
                 res.format({
-                    html: function(){
-                        res.render('boards/show', {title: board.title,"board": board});
-                    },
+                //     html: function(){
+                //         res.render('boards/show', {title: board.title,"board": board});
+                //     },
                     json: function(){
                         res.json({board : board});
                     }
