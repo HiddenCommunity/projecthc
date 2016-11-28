@@ -72,7 +72,7 @@ route.route('/list/:major')
                         res.render('boards/index', {title: major,"boards": boards});
                     },
                     json: function(){
-                        res.json(boards);
+                        res.json({boards : boards});
                     }
                 });
 
@@ -92,16 +92,17 @@ route.route('/list/:major')
             } else {
                 res.format({
                     json: function(){
-                        res.json(boards);
+                        res.json({boards : boards});
                     }
                 });
 
             }
         })
-    })
+    });
 
 //READ
 route.route('/read/:id')
+    //안드로이드용
     .get(function(req, res) {
         //var board_id = req.params.id;
         var board_id = req.params.id;
@@ -127,6 +128,7 @@ route.route('/read/:id')
             }
         })
     })
+    //웹 테스트 용
     .post(function(req, res){
         var board_id = req.params.id;
         console.log(board_id);
@@ -143,12 +145,12 @@ route.route('/read/:id')
                 });
                 res.format({
                     json: function(){
-                        res.json(board);
+                        res.json({board : board});
                     }
                 });
             }
         })
-    })
+    });
 
 //LIKE
 route.route('/like/:id')
@@ -185,7 +187,7 @@ route.route('/like/:id')
                 res.json({board: board});
             }
         })
-    })
+    });
 
 // UPDATE
 route.route('/edit/:id')
@@ -201,12 +203,11 @@ route.route('/edit/:id')
                     html: function(){
                         res.render('boards/edit', {
                             title: '글 읽기 화면',
-                            "date" : board_date,
                             "board" : board
                         });
                     },
                     json: function(){
-                        res.json(board);
+                        res.json({board : board});
                     }
                 });
             }
@@ -218,7 +219,6 @@ route.route('/edit/:id')
         var newTitle = req.query.title;
         var newBody = req.query.body;
         //var newDate = Date.now();
-        var board_id = req.id;
         // ID 로 해당 board 찾기
         mongoose.model('Board').findById(board_id, function (err, board) {
             board.update({
@@ -229,12 +229,12 @@ route.route('/edit/:id')
                 if (err) {
                     res.send("POST [실패] 글 수정 실패: " + err);
                 } else {
-                    res.json(board);
+                    res.json({board : board});
                     console.log('POST [성공] 글 수정 성공');
                 }
             })
         })
-    })
+    });
 
 //DELETE
 route.route('/delete/:id')
@@ -271,7 +271,7 @@ route.route('/delete/:id')
                 })
             }
         })
-    })
+    });
 
 //COMMENT
 route.route('/comment/:id')
@@ -285,13 +285,13 @@ route.route('/comment/:id')
         // ID 로 해당 board 찾기
         mongoose.model('Board').findById(board_id, function (err, board) {
             board.update({
-                $push: {"comment": {author: author, body: body}},
+                $push: {"comment": {author: author, body: body}}
             }, function (err, board) {
                 board.save(function (err) {
                     if (err) {
                         res.send("GET [실패] 댓글 달기 실패: " + err);
                     } else {
-                        res.json(board);
+                        res.json({board : board});
                         console.log('GET [성공] 댓글 달기 성공');
                     }
                 })
@@ -334,13 +334,13 @@ route.route('/comment/:id')
                     if (err) {
                         res.send("POST [실패] 댓글 달기 실패: " + err);
                     } else {
-                        res.json(board);
+                        res.json({board : board});
                         console.log('POST [성공] 댓글 달기 성공');
                     }
                 })
             }
         )
-    })
+    });
 
         // mongoose.model('Board').findById(board_id, function (err, board) {
         //     board.update({
