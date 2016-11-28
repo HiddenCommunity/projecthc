@@ -285,17 +285,14 @@ route.route('/comment/:id')
         mongoose.model('Board').findByIdAndUpdate(board_id,
             {$push: {"comment": {author: author, body: body}}},
             function (err, board) {
-                board.save(function (err) {
-                    if (err) {
-                        res.send("GET [실패] 댓글 달기 실패: " + err);
-                    } else {
-                        res.json({board : board});
-                        console.log('GET [성공] 댓글 달기 성공');
-                    }
-                })
+               if (err) {
+                    res.send("GET [실패] 댓글 달기 실패: " + err);
+               } else {
+                    res.json({board : board});
+                    console.log('GET [성공] 댓글 달기 성공');
+               }
             })
         })
-//    })
 
     .post(function(req, res) {
         var board_id = req.params.id;
@@ -308,14 +305,12 @@ route.route('/comment/:id')
         mongoose.model('Board').findByIdAndUpdate(board_id,
             {$push: {"comment": {author: author, body: body}}},
             function (err, board) {
-                board.save(function (err) {
-                    if (err) {
-                        res.send("POST [실패] 댓글 달기 실패: " + err);
-                    } else {
-                        res.json({board : board});
-                        console.log('POST [성공] 댓글 달기 성공');
-                    }
-                })
+                if (err) {
+                    res.send("POST [실패] 댓글 달기 실패: " + err);
+                } else {
+                    res.json({board : board});
+                    console.log('POST [성공] 댓글 달기 성공');
+                }
             }
         )
     });
