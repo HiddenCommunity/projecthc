@@ -22,17 +22,17 @@ route.route('/new')
         res.render('boards/new');
     })
     .post(function(req,res){
-        var category = req.body.major;
-        var author = req.body.author;
-        var title = req.body.title;
-        var body = req.body.body;
-        var tagArr = req.body.tag.split(' ');
+        // var category = req.body.major;
+        // var author = req.body.author;
+        // var title = req.body.title;
+        // var body = req.body.body;
+        // var tagArr = req.body.tag.split(' ');
 
-        // var category = req.query.major;
-        // var author = req.query.author;
-        // var title = req.query.title;
-        // var body = req.query.body;
-        // var tagArr = req.query.tag.split(' ');
+        var category = req.query.major;
+        var author = req.query.author;
+        var title = req.query.title;
+        var body = req.query.body;
+        var tagArr = req.query.tag.split(' ');
         console.log(tagArr);
 
         mongoose.model('Board').create({
@@ -278,10 +278,13 @@ route.route('/comment/:id')
         var body = req.query.body;
 
         // ID 로 해당 board 찾기
-        mongoose.model('Board').findById(board_id, function (err, board) {
-            board.update({
-                $push: {"comment": {author: author, body: body}}
-            }, function (err, board) {
+        // mongoose.model('Board').findById(board_id, function (err, board) {
+        //     board.update({
+        //         $push: {"comment": {author: author, body: body}}
+        //     }, function (err, board) {
+        mongoose.model('Board').findByIdAndUpdate(board_id,
+            {$push: {"comment": {author: author, body: body}}},
+            function (err, board) {
                 board.save(function (err) {
                     if (err) {
                         res.send("GET [실패] 댓글 달기 실패: " + err);
@@ -292,7 +295,7 @@ route.route('/comment/:id')
                 })
             })
         })
-    })
+//    })
 
     .post(function(req, res) {
         var board_id = req.params.id;
@@ -302,8 +305,7 @@ route.route('/comment/:id')
         //var body = req.body.body;
 
         // ID 로 해당 board 찾기
-        mongoose.model('Board').findByIdAndUpdate(
-            board_id,
+        mongoose.model('Board').findByIdAndUpdate(board_id,
             {$push: {"comment": {author: author, body: body}}},
             function (err, board) {
                 board.save(function (err) {
