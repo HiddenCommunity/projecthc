@@ -47,12 +47,9 @@ route.route('/new')
                 console.log('실패');
             } else { //게시글 생성 성공
                 console.log('POST 게시글 작성 성공 ' + board._id);
-                //console.log(typeof  board._id);
-                //console.log(typeof board._id.toString());
                 var id = board._id.toString();
                 res.json(
                     {response : id});
-                //console.log(board);
             }
         });
     });
@@ -277,8 +274,6 @@ route.route('/delete/:id')
 route.route('/comment/:id')
     .get(function(req, res) {
         var board_id = req.params.id;
-        //var author = req.query.author;
-        //var body = req.query.body;
         var author = req.query.author;
         var body = req.query.body;
 
@@ -322,6 +317,8 @@ route.route('/comment/:id')
 
     .post(function(req, res) {
         var board_id = req.params.id;
+        var author = req.query.author;
+        var body = req.query.body;
         var author = req.body.author;
         var body = req.body.body;
 
