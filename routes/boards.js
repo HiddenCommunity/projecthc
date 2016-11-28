@@ -293,34 +293,13 @@ route.route('/comment/:id')
             })
         })
     })
-        // var board_id = req.params.id;
-        // mongoose.model('Board').findById(board_id, function (err, board) {
-        //     if (err) {
-        //         console.log('GET[실패] "댓글" 쓸 게시글 검색 실패 ' + err);
-        //     } else {
-        //         console.log('GET[성공] "댓글" 쓸 게시글 id : ' + board._id);
-        //         res.format({
-        //             //HTML response will render the 'edit.jade' template
-        //             html: function(){
-        //                 res.render('boards/edit', {
-        //                     title: '글 읽기 화면',
-        //                     "date" : board_date,
-        //                     "board" : board
-        //                 });
-        //             },
-        //             json: function(){
-        //                 res.json(board);
-        //             }
-        //         });
-        //     }
-        // });
 
     .post(function(req, res) {
         var board_id = req.params.id;
         var author = req.query.author;
         var body = req.query.body;
-        var author = req.body.author;
-        var body = req.body.body;
+        //var author = req.body.author;
+        //var body = req.body.body;
 
         // ID 로 해당 board 찾기
         mongoose.model('Board').findByIdAndUpdate(
