@@ -230,6 +230,44 @@ route.route('/like/:id')
         })
     });
 
+//UNLIKE
+route.route('/unlike/:id')
+    .get(function (req, res) {
+        var board_id = req.params.id;
+        mongoose.model('Board').findById(board_id, function (err, board) {
+            if (err) {
+                console.log('GET [실패] "좋아요 취소"할 게시글 찾기 실패 에러 : ' + err);
+            } else {
+                console.log('GET [성공] "좋아요 취소" 게시글 ID: ' + board._id);
+                board.meta.like -= 1; //좋아요수 -1
+                board.save(function (err) { // 변화된 좋아요 수 저장
+                    if (err) throw err;
+                    else
+                        console.log('GET [성공] 좋아요 취소 업데이트. 현재 좋아요수 : ' + board.meta.like);
+                });
+                res.json({response: "ok"});
+            }
+        })
+    })
+    .post(function (req, res) {
+        var board_id = req.params.id;
+        mongoose.model('Board').findById(board_id, function (err, board) {
+            if (err) {
+                console.log('POST [실패] "좋아요 취소"할 게시글 찾기 실패 에러 : ' + err);
+            } else {
+                console.log('POST [성공] "좋아요 취소" 게시글 ID: ' + board._id);
+                board.meta.like -= 1; //좋아요수 +1
+                board.save(function (err) { // 변화된 좋아요수 저장
+                    if (err) throw err;
+                    else
+                        console.log('POST [성공] 좋아요 취소 업데이트. 현재 좋아요수 : ' + board.meta.like);
+                });
+                res.json({response: "ok"});
+            }
+        })
+    });
+
+
 // UPDATE
 route.route('/edit/:id')
     .get(function (req, res) {
