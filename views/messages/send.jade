@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+    h1.
+        #{title}
+    form#formSendMessage(name="sendMessage",method="post",action="/boards/send")
+        p 받는 사람:
+            input#inputRecipient(type="text", name="recipient")
+        p 보내는 사람:
+            input#inputSender(type="text", name="sender")
+        p 내용:
+            input#inputBody(type="text", name="body")
+        p
+            button#btnSubmit(type="submit") 전송
