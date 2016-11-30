@@ -38,8 +38,7 @@ route.route('/new')
             } else { //게시글 생성 성공
                 console.log('POST 게시글 작성 성공 ' + board._id);
                 var id = board._id.toString();
-                res.json(
-                    {response: id});
+                res.json({response: id});
             }
         });
     });
@@ -309,7 +308,8 @@ route.route('/update/:id')
                 if (err) {
                     res.send("POST [실패] 글 수정 실패: " + err);
                 } else {
-                    res.json({board: board});
+                    var id = board._id.toString();
+                    res.json({response: id});
                     console.log('POST [성공] 글 수정 성공');
                 }
             })
@@ -331,7 +331,8 @@ route.route('/update/:id')
                 if (err) {
                     res.send("POST [실패] 글 수정 실패: " + err);
                 } else {
-                    res.json({board: board});
+                    var id = board._id.toString();
+                    res.json({response: id});
                     console.log('POST [성공] 글 수정 성공');
                 }
             })
