@@ -21,12 +21,13 @@ route.route('/new')
         res.render('boards/new');
     })
     .post(function(req,res){
-        // var category = req.body.major;
-        // var author = req.body.author;
-        // var title = req.body.title;
-        // var body = req.body.body;
-        // var tagArr = req.body.tag.split(' ');
-
+        /*웹테스트용
+        var category = req.body.major;
+        var author = req.body.author;
+        var title = req.body.title;
+        var body = req.body.body;
+        var tagArr = req.body.tag.split(' ');
+        */
         var category = req.query.major;
         var author = req.query.author;
         var title = req.query.title;
@@ -169,7 +170,8 @@ route.route('/comment/:id')
                     res.send("GET [실패] 댓글 달기 실패: " + err);
                 } else {
                     console.log('GET [성공] 댓글 달기 성공');
-                    res.redirect('http://localhost:3000/boards/read/' + board_id);
+                    res.redirect('http://52.78.207.133:3000/boards/read/' + board_id);
+                    //res.redirect('http://localhost:3000/boards/read/' + board_id);
                     //res.json({board : board});
                     console.log('GET [성공] 댓글 달기 후 읽기 화면 요청');
                 }
