@@ -3,7 +3,7 @@ extends ../layout
 block content
     h1.
         Board ID #{board._id}
-    form(action='/boards/edit/#{board._id}',method='post',name='updateBoard',enctype='application/x-www-form-urlencoded')
+    form(action='/boards/update/#{board._id}',method='post',name='updateBoard',enctype='application/x-www-form-urlencoded')
         p Title:
             input#inputTitle(type='text', value='#{board.title}', name='title')
         p Body:

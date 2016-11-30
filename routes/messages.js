@@ -4,8 +4,8 @@ var express = require('express'),
     socket = require('socket.io');
 
 route.route('/send')
-    .get(function (req, res){
-        res.render('messages/send', { title: '메시지 전송' });
+    .get(function (req, res) {
+        res.render('messages/send', {title: '메시지 전송'});
     })
     .post(function (req, res) {
         var recipient = req.body.recipient;

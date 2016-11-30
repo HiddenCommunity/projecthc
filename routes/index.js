@@ -202,7 +202,6 @@ module.exports = router;
 //           var last_login_date = member.last_login_date;
 //
 //           res.format({
-//             //HTML response will render the 'edit.jade' template
 //             // html: function(){
 //             //   res.render('members/edit', {
 //             //     title: 'Member' + member._id,
@@ -381,7 +380,6 @@ module.exports = router;
 //           //var date = board.date.toISOString();
 //           //date = date.substring(0, date.indexOf('T'));  날짜만 자름.
 //           res.format({
-//             //'edit.jade' 로
 //             html: function(){
 //               res.render('boards/edit', {
 //                 title: 'Board' + board._id,

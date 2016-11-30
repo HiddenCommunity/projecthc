@@ -194,6 +194,7 @@ route.route('/comment/:id')
     });
 
 //LIKE
+//안드로이드용 : POST
 route.route('/like/:id')
     .get(function (req, res) {
         var board_id = req.params.id;
@@ -212,6 +213,7 @@ route.route('/like/:id')
             }
         })
     })
+    //안드로이드용
     .post(function (req, res) {
         var board_id = req.params.id;
         mongoose.model('Board').findById(board_id, function (err, board) {
@@ -231,6 +233,7 @@ route.route('/like/:id')
     });
 
 //UNLIKE
+//안드로이드용 : POST
 route.route('/unlike/:id')
     .get(function (req, res) {
         var board_id = req.params.id;
@@ -249,6 +252,7 @@ route.route('/unlike/:id')
             }
         })
     })
+    //안드로이드용
     .post(function (req, res) {
         var board_id = req.params.id;
         mongoose.model('Board').findById(board_id, function (err, board) {
@@ -269,41 +273,60 @@ route.route('/unlike/:id')
 
 
 // UPDATE
-route.route('/edit/:id')
+route.route('/update/:id')
     .get(function (req, res) {
+        //
+        // var board_id = req.params.id;
+        // mongoose.model('Board').findById(board_id, function (err, board) {
+        //     if (err) {
+        //         console.log('GET [실패] 해당 게시글 검색 실패 ' + err);
+        //     } else {
+        //         console.log('GET [성공] 게시글 id : ' + board._id);
+        //         res.format({
+        //             // html: function () {
+        //             //     res.render('boards/update', {
+        //             //         title: '글 읽기 화면',
+        //             //         "board": board
+        //             //     });
+        //             // },
+        //             json: function () {
+        //                 res.json({board: board});
+        //             }
+        //         });
+        //     }
+        // });
         var board_id = req.params.id;
-        mongoose.model('Board').findById(board_id, function (err, board) {
-            if (err) {
-                console.log('GET [실패] 해당 게시글 검색 실패 ' + err);
-            } else {
-                console.log('GET [성공] 게시글 id : ' + board._id);
-                res.format({
-                    //HTML response will render the 'edit.jade' template
-                    html: function () {
-                        res.render('boards/edit', {
-                            title: '글 읽기 화면',
-                            "board": board
-                        });
-                    },
-                    json: function () {
-                        res.json({board: board});
-                    }
-                });
-            }
-        });
-    })
-
-    .post(function (req, res) {
-        var board_id = req.params.id;
+        //var newTitle = req.body.title;
+        //var newBody = req.body.body;
         var newTitle = req.query.title;
         var newBody = req.query.body;
-        //var newDate = Date.now();
-        // ID 로 해당 board 찾기
+
         mongoose.model('Board').findById(board_id, function (err, board) {
             board.update({
                 title: newTitle,
                 body: newBody
-                //date: newDate
+            }, function (err, board) {
+                if (err) {
+                    res.send("POST [실패] 글 수정 실패: " + err);
+                } else {
+                    res.json({board: board});
+                    console.log('POST [성공] 글 수정 성공');
+                }
+            })
+        })
+    })
+
+    .post(function (req, res) {
+        var board_id = req.params.id;
+        //var newTitle = req.body.title;
+        //var newBody = req.body.body;
+        var newTitle = req.query.title;
+        var newBody = req.query.body;
+
+        mongoose.model('Board').findById(board_id, function (err, board) {
+            board.update({
+                title: newTitle,
+                body: newBody
             }, function (err, board) {
                 if (err) {
                     res.send("POST [실패] 글 수정 실패: " + err);
