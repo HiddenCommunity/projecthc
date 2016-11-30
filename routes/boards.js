@@ -4,10 +4,7 @@ var express = require('express'),
     session = require('express-session');
 
 /*
-* [게시판 기능]
-* 게시글 리스트 : 게시판DB에서 카테고리가 "  "인 글들을 모두 불러온다.
-* C:세션에서 member_id를 받아옴 -> member_id값으로 회원db에서 해당하는 회원 찾기 -> 그 회원의 name 이 게시글 작성자
-* R:게시글을 눌렀을 때 게시글_id로 게시판db에서 글 하나 찾기, 조회수 +1
+
 * U:R->업뎃
 * D:R->삭제
 * 좋아요:R->좋아요수 +1
@@ -17,6 +14,8 @@ var express = require('express'),
 * */
 
 //CREATE
+//테스트용 : POST form에서 넘어오기 때문에 req.body.*** 로 받아야함.
+//안드로이드 : POST req.query.*** 로 받고 -> DB에 넣고 -> 새 Board를 생성 -> 성공하면 작성한 board_id를 string으로 만들어서 리턴
 route.route('/new')
     .get(function(req, res){
         res.render('boards/new');
@@ -55,6 +54,8 @@ route.route('/new')
     });
 
 //LIST
+//테스트용 : 전공게시판 리스트 GET 요청
+//안드로이드에서 해당 전공게시판 리스트 GET 요청 ->
 route.route('/list/:major')
     .get(function(req, res) {
         var major = req.params.major;
@@ -98,16 +99,15 @@ route.route('/list/:major')
     });
 
 //READ
+//게시글을 눌렀을 때 게시글_id로 게시판db에서 글 하나 찾기, 조회수 +1
 route.route('/read/:id')
     //안드로이드용
     .get(function(req, res) {
-        //var board_id = req.params.id;
         var board_id = req.params.id;
         mongoose.model('Board').findById(board_id, function (err, board) {
             if (err) {
                 console.log('GET [실패] 게시글 읽기 실패 에러 : ' + err);
             } else {
-                //console.log('GET [성공] 검색한 게시글 ID: ' + board._id);
                 board.meta.hit += 1; //조회수 +1
                 board.save(function(err){ // 변화된 조횟수 저장
                     if(err) throw err;
@@ -125,7 +125,7 @@ route.route('/read/:id')
             }
         })
     })
-    //웹 테스트 용
+    //웹 테스트 용 - form 에서 넘어오기 때문에 req.body.*** 로 받아야함.
     .post(function(req, res){
         var board_id = req.params.id;
         console.log(board_id);
@@ -138,7 +138,7 @@ route.route('/read/:id')
                 board.save(function(err){ // 변화된 조횟수 저장
                     if(err) throw err;
                     else
-                        console.log('[성공] 조회수 업데이트. 현재 조회수 : ' + board.meta.hit);
+                        console.log('POST [성공] 조회수 업데이트. 현재 조회수 : ' + board.meta.hit);
                 });
                 res.format({
                     json: function(){
@@ -147,6 +147,54 @@ route.route('/read/:id')
                 });
             }
         })
+    });
+
+//COMMENT
+route.route('/comment/:id')
+    //웹 테스트용
+    .get(function(req, res) {
+        var board_id = req.params.id;
+        var author = req.query.author;
+        var body = req.query.body;
+
+        // ID 로 해당 board 찾기
+        // mongoose.model('Board').findById(board_id, function (err, board) {
+        //     board.update({
+        //         $push: {"comment": {author: author, body: body}}
+        //     }, function (err, board) {
+        mongoose.model('Board').findByIdAndUpdate(board_id,
+            {$push: {"comment": {author: author, body: body}}},
+            function (err, board) {
+                if (err) {
+                    res.send("GET [실패] 댓글 달기 실패: " + err);
+                } else {
+                    console.log('GET [성공] 댓글 달기 성공');
+                    res.redirect('http://localhost:3000/boards/read/' + board_id);
+                    //res.json({board : board});
+                    console.log('GET [성공] 댓글 달기 후 읽기 화면 요청');
+                }
+            })
+    })
+    //안드로이드용
+    .post(function(req, res) {
+        var board_id = req.params.id;
+        var author = req.query.author;
+        var body = req.query.body;
+
+        // ID 로 해당 board 찾기
+        mongoose.model('Board').findByIdAndUpdate(board_id,
+            {$push: {"comment": {author: author, body: body}}},
+            function (err, board) {
+                if (err) {
+                    res.send("POST [실패] 댓글 달기 실패: " + err);
+                } else {
+                    console.log('POST [성공] 댓글 달기 성공');
+                    res.redirect('http://52.78.207.133:3000/boards/read/' + board_id);
+                    //res.json({board : board});
+                    console.log('POST [성공] 댓글 달기 후 읽기 화면 요청');
+                }
+            }
+        )
     });
 
 //LIKE
@@ -270,50 +318,7 @@ route.route('/delete/:id')
         })
     });
 
-//COMMENT
-route.route('/comment/:id')
-    .get(function(req, res) {
-        var board_id = req.params.id;
-        var author = req.query.author;
-        var body = req.query.body;
 
-        // ID 로 해당 board 찾기
-        // mongoose.model('Board').findById(board_id, function (err, board) {
-        //     board.update({
-        //         $push: {"comment": {author: author, body: body}}
-        //     }, function (err, board) {
-        mongoose.model('Board').findByIdAndUpdate(board_id,
-            {$push: {"comment": {author: author, body: body}}},
-            function (err, board) {
-               if (err) {
-                    res.send("GET [실패] 댓글 달기 실패: " + err);
-               } else {
-                    res.json({board : board});
-                    console.log('GET [성공] 댓글 달기 성공');
-               }
-            })
-        })
-
-    .post(function(req, res) {
-        var board_id = req.params.id;
-        var author = req.query.author;
-        var body = req.query.body;
-        //var author = req.body.author;
-        //var body = req.body.body;
-
-        // ID 로 해당 board 찾기
-        mongoose.model('Board').findByIdAndUpdate(board_id,
-            {$push: {"comment": {author: author, body: body}}},
-            function (err, board) {
-                if (err) {
-                    res.send("POST [실패] 댓글 달기 실패: " + err);
-                } else {
-                    res.json({board : board});
-                    console.log('POST [성공] 댓글 달기 성공');
-                }
-            }
-        )
-    });
 
         // mongoose.model('Board').findById(board_id, function (err, board) {
         //     board.update({
