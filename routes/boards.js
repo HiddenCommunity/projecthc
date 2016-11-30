@@ -206,8 +206,9 @@ route.route('/like/:id')
                 board.save(function (err) { // 변화된 좋아요 수 저장
                     if (err) throw err;
                     else
-                        console.log('GET [성공] 좋아요 업데이트. 현재 조회수 : ' + board.meta.like);
+                        console.log('GET [성공] 좋아요 업데이트. 현재 좋아요수 : ' + board.meta.like);
                 });
+                res.json({response: "ok"});
             }
         })
     })
@@ -219,11 +220,12 @@ route.route('/like/:id')
             } else {
                 console.log('POST [성공] "좋아요" 게시글 ID: ' + board._id);
                 board.meta.like += 1; //좋아요수 +1
-                board.save(function (err) { // 변화된 조횟수 저장
+                board.save(function (err) { // 변화된 좋아요수 저장
                     if (err) throw err;
                     else
-                        console.log('POST [성공] 좋아요 업데이트. 현재 조회수 : ' + board.meta.like);
+                        console.log('POST [성공] 좋아요 업데이트. 현재 좋아요수 : ' + board.meta.like);
                 });
+                res.json({response: "ok"});
             }
         })
     });
