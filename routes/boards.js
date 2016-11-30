@@ -299,11 +299,13 @@ route.route('/update/:id')
         //var newBody = req.body.body;
         var newTitle = req.query.title;
         var newBody = req.query.body;
+        var newTagArr = req.query.tag.split(' ');
 
         mongoose.model('Board').findById(board_id, function (err, board) {
             board.update({
                 title: newTitle,
-                body: newBody
+                body: newBody,
+                tag:newTagArr
             }, function (err, board) {
                 if (err) {
                     res.send("POST [실패] 글 수정 실패: " + err);
