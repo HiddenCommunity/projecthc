@@ -308,8 +308,7 @@ route.route('/update/:id')
                 if (err) {
                     res.send("POST [실패] 글 수정 실패: " + err);
                 } else {
-                    var id = board._id.toString();
-                    res.json({response: id});
+                    res.json({response: board_id});
                     console.log('POST [성공] 글 수정 성공');
                 }
             })
@@ -331,8 +330,7 @@ route.route('/update/:id')
                 if (err) {
                     res.send("POST [실패] 글 수정 실패: " + err);
                 } else {
-                    var id = board._id.toString();
-                    res.json({response: id});
+                    res.json({response: board_id});
                     console.log('POST [성공] 글 수정 성공');
                 }
             })
