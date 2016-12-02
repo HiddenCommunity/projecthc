@@ -543,9 +543,6 @@ module.exports = router;
 //       var major1 = req.param('major1');
 //       var major2 = req.param('major2');
 //       var major3 = req.param('major3');
-//       //major1 = iconv.encode(major1, utf-8);
-//       //major2 = iconv.encode(major2, enc);
-//       //major3 = iconv.toString(major3);
 //
 //       //이메일을 찾아서
 //       mongoose.model('Member').findOne({'email': email }, function (err, member) {

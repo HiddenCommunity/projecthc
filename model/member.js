@@ -2,10 +2,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var memberSchema = new Schema({
+    //email: {type : String, unique : true}, 제대로 할 때는 이렇게 바꿔야함.
+    //nickname: {type : String, unique : true},
     email: String,
     nickname: String,
     password : String,
-//    majors: [String],
     major1 : String,
     major2 : String,
     major3 : String,

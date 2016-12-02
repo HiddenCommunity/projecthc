@@ -378,19 +378,32 @@ route.route('/delete/:id')
         })
     });
 
+//SEARCH
+//글내용, 태그, 작성자 검색
+route.route('/search')
+    .get(function (req, res) {
+        res.render('boards/search');
+    })
+    .post(function (req, res) {
+        var keyword = req.body.keyword;
+        mongoose.model('Board').find().or([
+            {body: {$regex:keyword}},
+            {tag: {$regex:keyword}},
+            {author: {$regex:keyword}}
+        ]).sort({date: -1}).exec(function (err, boards) {
+            //db에서 날짜 순으로 데이터들을 가져옴
+            if (err) {
+                return console.error(err);
+            } else {
+                res.format({
+                    json: function () {
+                        res.json({boards: boards});
+                    }
+                });
 
-// mongoose.model('Board').findById(board_id, function (err, board) {
-//     board.update({
-//         $push: {"comment": {author: author, body: body}},
-//     }, function (err, board) {
-//         if (err) {
-//             res.send("POST [실패] 댓글 달기 실패: " + err);
-//         } else {
-//             res.json(board);
-//             console.log('POST [성공] 댓글 달기 성공');
-//         }
-//     })
-// })
+            }
+        })
+    });
 
 // req.param 중에 id가 있을 때,에러 체킹 :id 를 가지고 db에 들어있는지 확인.
 // route.param('id', function(req, res, next, id) {

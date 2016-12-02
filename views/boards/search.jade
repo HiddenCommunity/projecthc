@@ -1,0 +1,11 @@
+extends ../layout
+
+block content
+    h1.
+        검색
+    form(action='/boards/search',method='post',name='searchBoard',enctype='application/x-www-form-urlencoded')
+        p 검색어:
+            input#inputKeyword(type='text', name='keyword')
+        p
+            button#btnSubmit(type='submit').
+                검색
