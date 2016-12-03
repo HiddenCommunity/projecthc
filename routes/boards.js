@@ -375,12 +375,32 @@ route.route('/delete/:id')
 //글내용, 태그, 작성자 검색
 route.route('/search')
     .get(function (req, res) {
-        res.render('boards/search');
-    })
-    .post(function (req, res) {
-        var keyword = req.query.keyword;
         // 웹테스트용
-        //var keyword = req.body.keyword;
+        // res.render('boards/search');
+        var keyword = req.query.keyword;
+
+        mongoose.model('Board').find().or([
+            {title: {$regex:keyword}},
+            {body: {$regex:keyword}},
+            {tag: {$regex:keyword}},
+            {author: {$regex:keyword}}
+        ]).sort({date: -1}).exec(function (err, boards) {
+            //db에서 날짜 순으로 데이터들을 가져옴
+            if (err) {
+                return console.error(err);
+            } else {
+                res.format({
+                    json: function () {
+                        res.json({boards: boards});
+                    }
+                });
+
+            }
+        })
+    })
+    //웹테스트용
+    .post(function (req, res) {
+        var keyword = req.body.keyword;
 
         mongoose.model('Board').find().or([
             {title: {$regex:keyword}},
