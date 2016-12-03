@@ -224,6 +224,7 @@ route.route('/like/:id')
     //안드로이드용
     .post(function (req, res) {
         var board_id = req.params.id;
+        console.log(board_id);
         var author = req.query.author;
 
         mongoose.model('Board').findById(board_id, function (err, board) {
