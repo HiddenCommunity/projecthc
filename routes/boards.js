@@ -217,7 +217,7 @@ route.route('/like/:id')
                 });
                 //res.json({board : board});
                 console.log('POST [성공] 댓글 달기 후 읽기 화면 요청');
-                res.json({response: "ok"});
+                //res.json({response: "ok"});
             }
         })
     })
