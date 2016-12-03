@@ -373,11 +373,11 @@ route.route('/delete/:id')
 
 //SEARCH
 //글내용, 태그, 작성자 검색
-route.route('/search')
+route.route('/search/:keyword')
     .get(function (req, res) {
         // 웹테스트용
         // res.render('boards/search');
-        var keyword = req.query.keyword;
+        var keyword = req.params.keyword;
 
         mongoose.model('Board').find().or([
             {title: {$regex:keyword}},
