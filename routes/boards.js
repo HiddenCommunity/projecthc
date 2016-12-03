@@ -1,7 +1,6 @@
 var express = require('express'),
     route = express.Router(),
-    mongoose = require('mongoose'),
-    session = require('express-session');
+    mongoose = require('mongoose');
 
 //CREATE
 //테스트용 : POST form에서 넘어오기 때문에 req.body.*** 로 받아야함.
@@ -57,9 +56,9 @@ route.route('/list/:major')
             } else {
                 res.format({
                     //웹테스트용
-                    // html: function () {
-                    //     res.render('boards/index', {title: major, "boards": boards});
-                    // },
+                    html: function () {
+                        res.render('boards/index', {title: major, "boards": boards});
+                    },
                     json: function () {
                         res.json({boards: boards});
                     }
@@ -143,39 +142,15 @@ route.route('/read/:id')
     });
 
 //COMMENT
+//웹테스트용, 안드로이드 모두 POST
 route.route('/comment/:id')
-//웹 테스트용
-    .get(function (req, res) {
-        var board_id = req.params.id;
-        var author = req.query.author;
-        var body = req.query.body;
-
-        // ID 로 해당 board 찾기
-        // mongoose.model('Board').findById(board_id, function (err, board) {
-        //     board.update({
-        //         $push: {"comment": {author: author, body: body}}
-        //     }, function (err, board) {
-        mongoose.model('Board').findByIdAndUpdate(board_id,
-            {$push: {"comment": {author: author, body: body}}},
-            function (err, board) {
-                if (err) {
-                    res.send("GET [실패] 댓글 달기 실패: " + err);
-                } else {
-                    console.log('GET [성공] 댓글 달기 성공');
-                    res.redirect('http://52.78.207.133:3000/boards/read/' + board_id);
-                    //res.redirect('http://localhost:3000/boards/read/' + board_id);
-                    //res.json({board : board});
-                    console.log('GET [성공] 댓글 달기 후 읽기 화면 요청');
-                }
-            })
-    })
-    //안드로이드용
     .post(function (req, res) {
         var board_id = req.params.id;
-        var author = req.query.author;
-        var body = req.query.body;
-        //var author = req.body.author;
-        //var body = req.body.body;
+        //var author = req.query.author;
+        //var body = req.query.body;
+        //웹테스트용
+        var author = req.body.author;
+        var body = req.body.body;
 
         // ID 로 해당 board 찾기
         mongoose.model('Board').findByIdAndUpdate(board_id,
@@ -185,7 +160,21 @@ route.route('/comment/:id')
                     res.send("POST [실패] 댓글 달기 실패: " + err);
                 } else {
                     console.log('POST [성공] 댓글 달기 성공');
-                    res.redirect('http://52.78.207.133:3000/boards/read/' + board_id);
+                    //알림목록에 추가한다.
+                    mongoose.model('Notice').create({
+                        boardId : board_id,
+                        author : author,
+                        type : "comment"
+                    }, function (err, notice) {
+                        if (err) {
+                            console.log('[error] 알림 생성 실패');
+                        } else { //알림 목록 추가 성공
+                            console.log('POST [성공] 알림 작성 성공 ' + notice._id);
+                            //res.redirect('http://52.78.207.133:3000/boards/read/' + board_id);
+                            //웹테스트용
+                            res.redirect('http://localhost:3000/boards/read/' + board_id);
+                        }
+                    });
                     //res.json({board : board});
                     console.log('POST [성공] 댓글 달기 후 읽기 화면 요청');
                 }

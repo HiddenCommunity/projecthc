@@ -10,7 +10,8 @@ var express = require('express'),
 var db = require('./model/db'),  //db 파일을 변수로 추가한다.
     member = require('./model/member'),
     board = require('./model/board'),
-    message = require('./model/message');
+    message = require('./model/message'),
+    notice = require('./model/notice');
 
 var routes = require('./routes/index'),
     members = require('./routes/members'),
