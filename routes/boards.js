@@ -215,9 +215,8 @@ route.route('/like/:id')
                         res.redirect('http://localhost:3000/boards/read/' + board_id);
                     }
                 });
-                //res.json({board : board});
+                res.json({board : board});
                 console.log('POST [성공] 댓글 달기 후 읽기 화면 요청');
-                //res.json({response: "ok"});
             }
         })
     })
