@@ -17,7 +17,7 @@ route.route('/new')
          var body = req.body.body;
          var tagArr = req.body.tag.split(' ');
          */
-        var category = req.query.major;
+        var category = req.query.category;
         var author = req.query.author;
         var title = req.query.title;
         var body = req.query.body;
