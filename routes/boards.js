@@ -56,9 +56,10 @@ route.route('/list/:major')
                 return console.error(err);
             } else {
                 res.format({
-                    html: function () {
-                        res.render('boards/index', {title: major, "boards": boards});
-                    },
+                    //웹테스트용
+                    // html: function () {
+                    //     res.render('boards/index', {title: major, "boards": boards});
+                    // },
                     json: function () {
                         res.json({boards: boards});
                     }

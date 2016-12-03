@@ -3,7 +3,7 @@ extends ../layout
 block content
     h1.
         #{title}
-    form#formSendMessage(name="sendMessage",method="post",action="/boards/send")
+    form#formSendMessage(name="sendMessage",method="post",action="/messages/send")
         p 받는 사람:
             input#inputRecipient(type="text", name="recipient")
         p 보내는 사람:
