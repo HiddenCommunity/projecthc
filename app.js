@@ -17,7 +17,8 @@ var routes = require('./routes/index'),
     members = require('./routes/members'),
     boards = require('./routes/boards'),
     emails = require('./routes/emails'),
-    messages = require('./routes/messages');
+    messages = require('./routes/messages'),
+    notices = require('./routes/notices');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));  //view 템플릿이 있는 디렉토리

@@ -55,10 +55,10 @@ route.route('/list/:major')
                 return console.error(err);
             } else {
                 res.format({
-                    //웹테스트용
-                    html: function () {
-                        res.render('boards/index', {title: major, "boards": boards});
-                    },
+                    // //웹테스트용
+                    // html: function () {
+                    //     res.render('boards/index', {title: major, "boards": boards});
+                    // },
                     json: function () {
                         res.json({boards: boards});
                     }
@@ -83,7 +83,6 @@ route.route('/list/:major')
                         res.json({boards: boards});
                     }
                 });
-
             }
         })
     });
@@ -188,6 +187,8 @@ route.route('/comment/:id')
 route.route('/like/:id')
     .get(function (req, res) {
         var board_id = req.params.id;
+        var author = req.query.author;
+
         mongoose.model('Board').findById(board_id, function (err, board) {
             if (err) {
                 console.log('GET [실패] "좋아요"할 게시글 찾기 실패 에러 : ' + err);
@@ -199,6 +200,23 @@ route.route('/like/:id')
                     else
                         console.log('GET [성공] 좋아요 업데이트. 현재 좋아요수 : ' + board.meta.like);
                 });
+                //알림목록에 추가한다.
+                mongoose.model('Notice').create({
+                    boardId : board_id,
+                    author : author,
+                    type : "like"
+                }, function (err, notice) {
+                    if (err) {
+                        console.log('[error] 알림 생성 실패');
+                    } else { //알림 목록 추가 성공
+                        console.log('POST [성공] 알림 작성 성공 ' + notice._id);
+                        //res.redirect('http://52.78.207.133:3000/boards/read/' + board_id);
+                        //웹테스트용
+                        res.redirect('http://localhost:3000/boards/read/' + board_id);
+                    }
+                });
+                //res.json({board : board});
+                console.log('POST [성공] 댓글 달기 후 읽기 화면 요청');
                 res.json({response: "ok"});
             }
         })
