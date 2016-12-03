@@ -239,9 +239,9 @@ route.route('/like/:id')
                 });
                 //알림목록에 추가한다.
                 mongoose.model('Notice').create({
-                    boardId : board_id,
-                    author : author,
-                    type : "like"
+                    boardId: board_id,
+                    author: author,
+                    type: "like"
                 }, function (err, notice) {
                     if (err) {
                         console.log('[error] 알림 생성 실패');
@@ -254,6 +254,7 @@ route.route('/like/:id')
                 res.json({response: "ok"});
             }
         })
+    })
 
 //UNLIKE
 //안드로이드용 : POST
