@@ -247,7 +247,6 @@ route.route('/like/:id')
                         console.log('[error] 알림 생성 실패');
                     } else { //알림 목록 추가 성공
                         console.log('POST [성공] 알림 작성 성공 ' + notice._id);
-                        res.redirect('http://52.78.207.133:3000/boards/read/' + board_id);
                     }
                 });
                 //res.json({board : board});
