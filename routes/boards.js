@@ -146,11 +146,11 @@ route.route('/read/:id')
 route.route('/comment/:id')
     .post(function (req, res) {
         var board_id = req.params.id;
-        //var author = req.query.author;
-        //var body = req.query.body;
+        var author = req.query.author;
+        var body = req.query.body;
         //웹테스트용
-        var author = req.body.author;
-        var body = req.body.body;
+        //var author = req.body.author;
+        //var body = req.body.body;
 
         // ID 로 해당 board 찾기
         mongoose.model('Board').findByIdAndUpdate(board_id,
@@ -170,9 +170,9 @@ route.route('/comment/:id')
                             console.log('[error] 알림 생성 실패');
                         } else { //알림 목록 추가 성공
                             console.log('POST [성공] 알림 작성 성공 ' + notice._id);
-                            //res.redirect('http://52.78.207.133:3000/boards/read/' + board_id);
+                            res.redirect('http://52.78.207.133:3000/boards/read/' + board_id);
                             //웹테스트용
-                            res.redirect('http://localhost:3000/boards/read/' + board_id);
+                            //res.redirect('http://localhost:3000/boards/read/' + board_id);
                         }
                     });
                     //res.json({board : board});
@@ -212,7 +212,7 @@ route.route('/like/:id')
                         console.log('POST [성공] 알림 작성 성공 ' + notice._id);
                         //res.redirect('http://52.78.207.133:3000/boards/read/' + board_id);
                         //웹테스트용
-                        res.redirect('http://localhost:3000/boards/read/' + board_id);
+                        //res.redirect('http://localhost:3000/boards/read/' + board_id);
                     }
                 });
                 //res.json({board : board});
@@ -224,21 +224,36 @@ route.route('/like/:id')
     //안드로이드용
     .post(function (req, res) {
         var board_id = req.params.id;
+        var author = req.query.author;
+
         mongoose.model('Board').findById(board_id, function (err, board) {
             if (err) {
                 console.log('POST [실패] "좋아요"할 게시글 찾기 실패 에러 : ' + err);
             } else {
                 console.log('POST [성공] "좋아요" 게시글 ID: ' + board._id);
                 board.meta.like += 1; //좋아요수 +1
-                board.save(function (err) { // 변화된 좋아요수 저장
+                board.save(function (err) { // 변화된 좋아요 수 저장
                     if (err) throw err;
                     else
                         console.log('POST [성공] 좋아요 업데이트. 현재 좋아요수 : ' + board.meta.like);
                 });
+                //알림목록에 추가한다.
+                mongoose.model('Notice').create({
+                    boardId : board_id,
+                    author : author,
+                    type : "like"
+                }, function (err, notice) {
+                    if (err) {
+                        console.log('[error] 알림 생성 실패');
+                    } else { //알림 목록 추가 성공
+                        console.log('POST [성공] 알림 작성 성공 ' + notice._id);
+                        res.redirect('http://52.78.207.133:3000/boards/read/' + board_id);
+                    }
+                });
+                console.log('POST [성공] 댓글 달기 후 읽기 화면 요청');
                 res.json({response: "ok"});
             }
         })
-    });
 
 //UNLIKE
 //안드로이드용 : POST
