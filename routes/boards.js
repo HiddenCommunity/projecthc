@@ -112,6 +112,7 @@ route.route('/read/:id')
 
                     json: function () {
                         res.json({board: board});
+                        console.log(board);
                     }
                 });
             }
