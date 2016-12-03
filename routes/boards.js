@@ -61,8 +61,6 @@ route.route('/list/:major')
                     // },
                     json: function () {
                         res.json({boards: boards});
-                        console.log(typeof boards);
-                        console.log(typeof {boards:boards});
                     }
                 });
 
