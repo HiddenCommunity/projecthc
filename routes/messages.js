@@ -14,7 +14,7 @@ route.route('/send/:recipient')
         // var body = req.body.body;
 
         //안드로이드용
-        var recipient = req.query.recipient;
+        var recipient = req.params.recipient;
         var sender = req.query.sender;
         var body = req.query.body;
 
