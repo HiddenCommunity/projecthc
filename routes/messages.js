@@ -3,7 +3,7 @@ var express = require('express'),
     mongoose = require('mongoose');
 
 //메시지 전송
-route.route('/send/:recipient')
+route.route('/send/:recipient/:body/:sender')
     // .get(function (req, res) {
     //     res.render('messages/send', {title: '메시지 전송'});
     // })
@@ -15,8 +15,8 @@ route.route('/send/:recipient')
 
         //안드로이드용
         var recipient = req.params.recipient;
-        var sender = req.query.sender;
-        var body = req.query.body;
+        var sender = req.params.sender;
+        var body = req.params.body;
 
         mongoose.model('Message').create({
             recipient: recipient,
