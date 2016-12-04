@@ -42,14 +42,38 @@ route.route('/new')
         });
     });
 
-//LIST
+//LIST - 최신순
 //테스트용 : 전공게시판 리스트 GET 요청
-//안드로이드에서 해당 전공게시판 리스트 GET 요청 ->
-route.route('/list/:major')
+//안드로이드에서 해당 전공게시판 리스트 GET 요청
+route.route('/dateList/:major')
     .get(function (req, res) {
         var major = req.params.major;
-
+        //var sort = "{'meta.hit':-1}";
         mongoose.model('Board').find({category: major}).sort({date: -1}).exec(function (err, boards) {
+            //db에서 날짜 순으로 데이터들을 가져옴
+            if (err) {
+                return console.error(err);
+            } else {
+                res.format({
+                    //웹테스트용
+                    // html: function () {
+                    //     res.render('boards/index', {title: major, "boards": boards});
+                    // },
+                    json: function () {
+                        res.json({boards: boards});
+                    }
+                });
+                console.log('최신순으로 정렬된 리스트');
+            }
+        })
+    })
+
+//LIST - 조회순
+route.route('/hitList/:major')
+    .get(function (req, res) {
+        var major = req.params.major;
+        //var sort = "{'meta.hit':-1}";
+        mongoose.model('Board').find({category: major}).sort({"meta.hit":-1}).exec(function (err, boards) {
             //db에서 날짜 순으로 데이터들을 가져옴
             if (err) {
                 return console.error(err);
@@ -63,27 +87,34 @@ route.route('/list/:major')
                         res.json({boards: boards});
                     }
                 });
+                console.log('조회수 순으로 정렬된 리스트');
             }
         })
     })
-    //안드로이드에서 전공별 게시판 볼때
-    .post(function (req, res) {
-        //var major = req.query.major;
+//LIST - 좋아요순
+route.route('/likeList/:major')
+    .get(function (req, res) {
         var major = req.params.major;
-
-        mongoose.model('Board').find({category: major}).sort({date: -1}).exec(function (err, boards) {
+        mongoose.model('Board').find({category: major}).sort({"meta.like":-1}).exec(function (err, boards) {
             //db에서 날짜 순으로 데이터들을 가져옴
             if (err) {
                 return console.error(err);
             } else {
                 res.format({
+                    // //웹테스트용
+                    // html: function () {
+                    //     res.render('boards/index', {title: major, "boards": boards});
+                    // },
                     json: function () {
                         res.json({boards: boards});
                     }
                 });
+                console.log('좋아요 순으로 정렬된 리스트');
             }
         })
-    });
+    })
+
+
 
 //READ
 //게시글을 눌렀을 때 게시글_id로 게시판db에서 글 하나 찾기, 조회수 +1
@@ -354,6 +385,7 @@ route.route('/delete/:id')
             }
         })
     })
+    //안드로이드용
     .post(function (req, res) {
         var board_id = req.params.id;
         mongoose.model('Board').findById(board_id, function (err, board) {
