@@ -27,7 +27,8 @@ route.route('/send')
                 res.send("[error] 메시지 전송 실패");
                 console.log('POST [실패] 메시지 전송 실패');
             } else { //메시지 전송 성공
-                res.redirect('/messages/list/'+ recipient);
+                //res.json({message : msg.body});
+                res.redirect('http://52.78.207.133:3000/messages/list/'+ recipient);
                 console.log('POST [성공] 메시지 전송 성공 ' + msg._id);
             }
         });
@@ -47,9 +48,9 @@ route.route('/list/:recipient')
                 return console.error(err);
             } else {
                 res.format({
-                    html: function () {
-                        res.render('messages/index', {title: recipient+'의 메시지 목록', "messages": msgs});
-                    },
+                    // html: function () {
+                    //     res.render('messages/index', {title: recipient+'의 메시지 목록', "messages": msgs});
+                    // },
                     json: function () {
                         res.json({msgs: msgs});
                     }
@@ -57,23 +58,6 @@ route.route('/list/:recipient')
             }
         })
     })
-    //안드로이드에서 전공별 게시판 볼때
-    .post(function (req, res) {
-        var major = req.params.major;
 
-        mongoose.model('Message').find({}).sort({date: -1}).exec(function (err, msgs) {
-            //db에서 날짜 순으로 데이터들을 가져옴
-            if (err) {
-                return console.error(err);
-            } else {
-                res.format({
-                    json: function () {
-                        res.json({msgs: msgs});
-                    }
-                });
-
-            }
-        })
-    });
 
 module.exports = route;
