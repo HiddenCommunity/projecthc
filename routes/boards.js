@@ -103,9 +103,9 @@ route.route('/read/:id')
                 });
                 res.format({
                     //웹 테스트용
-                    html: function(){
-                        res.render('boards/show', {title: board.title,"board": board});
-                    },
+                    // html: function(){
+                    //     res.render('boards/show', {title: board.title,"board": board});
+                    // },
 
                     json: function () {
                         res.json({board: board});
