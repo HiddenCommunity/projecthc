@@ -3,7 +3,8 @@ var Schema = mongoose.Schema;
 
 var noticeSchema = new Schema({
     boardId : String,
-    author : String,
+    boardAuthor : String,
+    actionAuthor : String,
     type : String,
     check : { type: Boolean, default: false }
 });

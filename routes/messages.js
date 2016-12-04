@@ -7,11 +7,16 @@ route.route('/send')
     .get(function (req, res) {
         res.render('messages/send', {title: '메시지 전송'});
     })
-    //test용으로
     .post(function (req, res) {
-        var recipient = req.body.recipient;
-        var sender = req.body.sender;
-        var body = req.body.body;
+        // 웹테스트용
+        // var recipient = req.body.recipient;
+        // var sender = req.body.sender;
+        // var body = req.body.body;
+
+        //안드로이드용
+        var recipient = req.query.recipient;
+        var sender = req.query.sender;
+        var body = req.query.body;
 
         mongoose.model('Message').create({
             recipient: recipient,
@@ -22,10 +27,8 @@ route.route('/send')
                 res.send("[error] 메시지 전송 실패");
                 console.log('POST [실패] 메시지 전송 실패');
             } else { //메시지 전송 성공
-                console.log('POST [성공] 메시지 전송 성공 ' + msg._id);
                 res.redirect('/messages/list/'+ recipient);
-                //res.redirect('/messages/list/'+ recipient);
-                //res.json({response: "Send ok"});
+                console.log('POST [성공] 메시지 전송 성공 ' + msg._id);
             }
         });
     });

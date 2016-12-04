@@ -10,13 +10,13 @@ route.route('/new')
         res.render('boards/new');
     })
     .post(function (req, res) {
-        /*웹테스트용
-         var category = req.body.major;
-         var author = req.body.author;
-         var title = req.body.title;
-         var body = req.body.body;
-         var tagArr = req.body.tag.split(' ');
-         */
+        //웹테스트용
+        //  var category = req.body.major;
+        //  var author = req.body.author;
+        //  var title = req.body.title;
+        //  var body = req.body.body;
+        //  var tagArr = req.body.tag.split(' ');
+
         var category = req.query.category;
         var author = req.query.author;
         var title = req.query.title;
@@ -63,8 +63,6 @@ route.route('/list/:major')
                         res.json({boards: boards});
                     }
                 });
-
-
             }
         })
     })
@@ -105,9 +103,9 @@ route.route('/read/:id')
                 });
                 res.format({
                     //웹 테스트용
-                    // html: function(){
-                    //     res.render('boards/show', {title: board.title,"board": board});
-                    // },
+                    html: function(){
+                        res.render('boards/show', {title: board.title,"board": board});
+                    },
 
                     json: function () {
                         res.json({board: board});
@@ -161,7 +159,8 @@ route.route('/comment/:id')
                     //알림목록에 추가한다.
                     mongoose.model('Notice').create({
                         boardId : board_id,
-                        author : author,
+                        boardAuthor: board.author,
+                        actionAuthor : author,
                         type : "comment"
                     }, function (err, notice) {
                         if (err) {
@@ -192,7 +191,8 @@ route.route('/comment/:id')
                     //알림목록에 추가한다.
                     mongoose.model('Notice').create({
                         boardId : board_id,
-                        author : author,
+                        boardAuthor: board.author,
+                        actionAuthor : author,
                         type : "comment"
                     }, function (err, notice) {
                         if (err) {
@@ -216,19 +216,20 @@ route.route('/like/:id')
 
         mongoose.model('Board').findById(board_id, function (err, board) {
             if (err) {
-                console.log('POST [실패] "좋아요"할 게시글 찾기 실패 에러 : ' + err);
+                console.log('POST [실패] LIKE 할 게시글 찾기 실패 에러 : ' + err);
             } else {
-                console.log('POST [성공] "좋아요" 게시글 ID: ' + board._id);
+                console.log('POST [성공] LIKE 게시글 ID: ' + board._id);
                 board.meta.like += 1; //좋아요수 +1
                 board.save(function (err) { // 변화된 좋아요 수 저장
                     if (err) throw err;
                     else
-                        console.log('POST [성공] 좋아요 업데이트. 현재 좋아요수 : ' + board.meta.like);
+                        console.log('POST [성공] LIKE 업데이트. 현재 좋아요수 : ' + board.meta.like);
                 });
                 //알림목록에 추가한다.
                 mongoose.model('Notice').create({
                     boardId : board_id,
-                    author : author,
+                    boardAuthor: board.author,
+                    actionAuthor : author,
                     type : "like"
                 }, function (err, notice) {
                     if (err) {
@@ -249,14 +250,14 @@ route.route('/unlike/:id')
         var board_id = req.params.id;
         mongoose.model('Board').findById(board_id, function (err, board) {
             if (err) {
-                console.log('POST [실패] "좋아요 취소"할 게시글 찾기 실패 에러 : ' + err);
+                console.log('POST [실패] "UNLIKE" 게시글 찾기 실패 에러 : ' + err);
             } else {
-                console.log('POST [성공] "좋아요 취소" 게시글 ID: ' + board._id);
+                console.log('POST [성공] "UNLINE" 게시글 ID: ' + board._id);
                 board.meta.like -= 1; //좋아요수 +1
                 board.save(function (err) { // 변화된 좋아요수 저장
                     if (err) throw err;
                     else
-                        console.log('POST [성공] 좋아요 취소 업데이트. 현재 좋아요수 : ' + board.meta.like);
+                        console.log('POST [성공] UNLIKE 업데이트. 현재 좋아요수 : ' + board.meta.like);
                 });
                 res.json({response: "ok"});
             }
@@ -346,8 +347,8 @@ route.route('/delete/:id')
                     if (err) {
                         return console.error(err);
                     } else {
-                        console.log('DELETE removing ID: ' + board._id);
-                        res.json({response: "ok"});
+                        console.log('GET [성공] DELETE 성공! 삭제한 게시글ID: ' + board._id);
+                        res.json({response:"ok"});
                     }
                 })
             }
@@ -363,8 +364,8 @@ route.route('/delete/:id')
                     if (err) {
                         return console.error(err);
                     } else {
-                        console.log('DELETE removing ID: ' + board._id);
-                        res.json({message: 'deleted', item: board});
+                        console.log('POST [성공] DELETE 성공! 삭제한 게시글ID: ' + board._id);
+                        res.json({response:"ok"});
                     }
                 })
             }

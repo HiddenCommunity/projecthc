@@ -37,7 +37,7 @@ route.use(cookieParser());
 //    }
 // })
 //
-// //이메일 계정 입력 <-테스트용
+//이메일 계정 입력 <-테스트용
 // route.get('/new', function(req, res){
 //    //렌더링할 라우트. /new 요청을 하면, view/members/new.jade 파일이 HTML형식으로 렌더링된다.
 //    res.render('members/new', { title: 'Hidden Community !' });

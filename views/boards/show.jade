@@ -7,8 +7,8 @@ block content
   p Title: #{board.title}
   p Body: #{board.body}
   p Hits: #{board.meta.hit}
-  p Likes: #{board.meta.hate}
-  p Hates: #{board.meta.like}
+  p Likes: #{board.meta.like}
+  p Hates: #{board.meta.hate}
 
   ul
     - each comment, i in board.comment
