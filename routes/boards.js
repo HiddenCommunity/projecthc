@@ -45,12 +45,23 @@ route.route('/new')
 //LIST - 최신순
 //테스트용 : 전공게시판 리스트 GET 요청
 //안드로이드에서 해당 전공게시판 리스트 GET 요청
-route.route('/dateList/:major')
+route.route('/list/:major/:value')
     .get(function (req, res) {
         var major = req.params.major;
-        //var sort = "{'meta.hit':-1}";
-        mongoose.model('Board').find({category: major}).sort({date: -1}).exec(function (err, boards) {
-            //db에서 날짜 순으로 데이터들을 가져옴
+        var value = req.params.value;
+
+        //정렬기준설정
+        if(value==0){
+            value = "date";
+        }else if(value==1){
+            value = "meta.hit";
+        }else{
+            value = "meta.like";
+        }
+
+        var query = {};
+        query[value] = -1;
+        mongoose.model('Board').find({category: major}).sort(query).exec(function (err, boards) {
             if (err) {
                 return console.error(err);
             } else {
@@ -63,58 +74,10 @@ route.route('/dateList/:major')
                         res.json({boards: boards});
                     }
                 });
-                console.log('최신순으로 정렬된 리스트');
+                console.log(value + '기준으로 정렬된 리스트');
             }
         })
     })
-
-//LIST - 조회순
-route.route('/hitList/:major')
-    .get(function (req, res) {
-        var major = req.params.major;
-        //var sort = "{'meta.hit':-1}";
-        mongoose.model('Board').find({category: major}).sort({"meta.hit":-1}).exec(function (err, boards) {
-            //db에서 날짜 순으로 데이터들을 가져옴
-            if (err) {
-                return console.error(err);
-            } else {
-                res.format({
-                    // //웹테스트용
-                    // html: function () {
-                    //     res.render('boards/index', {title: major, "boards": boards});
-                    // },
-                    json: function () {
-                        res.json({boards: boards});
-                    }
-                });
-                console.log('조회수 순으로 정렬된 리스트');
-            }
-        })
-    })
-//LIST - 좋아요순
-route.route('/likeList/:major')
-    .get(function (req, res) {
-        var major = req.params.major;
-        mongoose.model('Board').find({category: major}).sort({"meta.like":-1}).exec(function (err, boards) {
-            //db에서 날짜 순으로 데이터들을 가져옴
-            if (err) {
-                return console.error(err);
-            } else {
-                res.format({
-                    // //웹테스트용
-                    // html: function () {
-                    //     res.render('boards/index', {title: major, "boards": boards});
-                    // },
-                    json: function () {
-                        res.json({boards: boards});
-                    }
-                });
-                console.log('좋아요 순으로 정렬된 리스트');
-            }
-        })
-    })
-
-
 
 //READ
 //게시글을 눌렀을 때 게시글_id로 게시판db에서 글 하나 찾기, 조회수 +1
@@ -454,34 +417,5 @@ route.route('/search/:keyword')
             }
         })
     });
-
-// req.param 중에 id가 있을 때,에러 체킹 :id 를 가지고 db에 들어있는지 확인.
-// route.param('id', function(req, res, next, id) {
-//     console.log('validating ' + id + ' exists');
-//     //db에서 해당 id를 찾는다.
-//     mongoose.model('Board').findById(id, function (err, board) {
-//         //db에 그 id가 없으면 404
-//         if (err) {
-//             console.log(id + ' was not found');
-//             res.status(404);
-//             var err = new Error('Not Found');
-//             err.status = 404;
-//             res.format({
-//                 html: function(){
-//                     next(err);
-//                 },
-//                 json: function(){
-//                     res.json({message : err.status  + ' ' + err});
-//                 }
-//             });
-//             //해당 id를 찾으면 req.id에 저장하고 계속 쓴다.
-//         } else {
-//             console.log(board);
-//             // validation 완료되면 새 item(board)를 req에 저장한다.
-//             req.id = id;
-//             next();
-//         }
-//     });
-// });
 
 module.exports = route;
