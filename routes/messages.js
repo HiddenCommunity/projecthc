@@ -12,23 +12,27 @@ route.route('/myList/:member')
             if (err) {
                 return console.error(err);
             } else {
-                for (var i = 0; i < senders.length; i++) {
-                    members.push(senders[i]);
-                    console.log(members[i]);
-                }
                 mongoose.model('Message').distinct("recipient", {"sender": member}).exec(function (err, recipients) {
                     if (err) {
                         return console.error(err);
                     } else {
-                        for (var i = 0; i < recipients.length; i++) {
+                        for (var i = 0; i < senders.length; i++)
+                        {
+                            members.push(senders[i]);
+                            console.log(members[i]);
+                        }
+                        for (var i = 0; i < recipients.length; i++)
+                        {
                             if (members.indexOf(recipients[i]) == -1)
                                 members.push(recipients[i]);
                         }
+
+                        res.json({members: members});
                     }
                 })
-                res.json({members: members});
             }
         })
+
     })
 
 //메시지 전송
