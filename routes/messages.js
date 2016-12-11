@@ -2,11 +2,40 @@ var express = require('express'),
     route = express.Router(),
     mongoose = require('mongoose');
 
+//내 대화 전체 목록
+route.route('/myList/:member')
+    .get(function (req, res) {
+        var member = req.params.member;
+        var members = [];
+
+        mongoose.model('Message').distinct("sender", {"recipient": member}).exec(function (err, senders) {
+            if (err) {
+                return console.error(err);
+            } else {
+                for (var i = 0; i < senders.length; i++) {
+                    members.push(senders[i]);
+                    console.log(members[i]);
+                }
+                mongoose.model('Message').distinct("recipient", {"sender": member}).exec(function (err, recipients) {
+                    if (err) {
+                        return console.error(err);
+                    } else {
+                        for (var i = 0; i < recipients.length; i++) {
+                            if (members.indexOf(recipients[i]) == -1)
+                                members.push(recipients[i]);
+                        }
+                    }
+                })
+                res.json({members: members});
+            }
+        })
+    })
+
 //메시지 전송
 route.route('/send/:recipient')
-    // .get(function (req, res) {
-    //     res.render('messages/send', {title: '메시지 전송'});
-    // })
+    .get(function (req, res) {
+        res.render('messages/send', {title: '메시지 전송'});
+    })
     .get(function (req, res) {
         // 웹테스트용
         // var recipient = req.body.recipient;
@@ -28,21 +57,22 @@ route.route('/send/:recipient')
                 console.log('GET [실패] 메시지 전송 실패');
             } else { //메시지 전송 성공
                 //res.json({message : msg.body});
-                res.redirect('http://52.78.207.133:3000/messages/list/'+ recipient);
+                res.redirect('http://52.78.207.133:3000/messages/room/'+ recipient);
+                //res.redirect('http://localhost:3000/messages/room/'+ recipient);
                 console.log('GET [성공] 메시지 전송 성공 ' + msg._id);
             }
         });
     });
 
-//LIST
-route.route('/list/:recipient')
+//해당 사람과의 대화내용 리스트
+route.route('/room/:recipient')
     .get(function (req, res) {
         var recipient = req.params.recipient;
-
+        //받는 사람이 나이거나, 보낸 사람이 나인 메시지들
         mongoose.model('Message').find().or([
             {recipient: {$regex:recipient}},
             {sender: {$regex:recipient}}
-        ]).sort({date: -1}).exec(function (err, msgs) {
+        ]).sort({date: 1}).exec(function (err, msgs) {
             //db에서 날짜 순으로 데이터들을 가져옴
             if (err) {
                 return console.error(err);
@@ -58,6 +88,8 @@ route.route('/list/:recipient')
             }
         })
     })
+
+
 
 
 module.exports = route;
