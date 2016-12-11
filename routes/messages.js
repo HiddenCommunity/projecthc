@@ -60,7 +60,7 @@ route.route('/send/:recipient')
                 console.log('GET [실패] 메시지 전송 실패');
             } else { //메시지 전송 성공
                 //res.json({message : msg.body});
-                res.redirect('http://52.78.207.133:3000/messages/room/'+ recipient);
+                res.redirect('http://52.78.207.133:3000/messages/room/'+ recipient +'/sender/'+sender);
                 //res.redirect('http://localhost:3000/messages/room/'+ recipient +'/sender/'+sender);
                 console.log('GET [성공] 메시지 전송 성공 ' + msg._id);
             }
