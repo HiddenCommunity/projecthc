@@ -21,19 +21,19 @@ route.route('/list/:me')
 
 route.route('/check/:boardId')
     //안드로이드용
-    .get(function (req, res) {
+    .post(function (req, res) {
         var board_id = req.params.id;
         console.log(board_id);
         mongoose.model('Notice').find({boardId:board_id}).exec(function (err, notice) {
             if (err) {
-                console.log('GET [실패] Notice 체크 실패 에러 : ' + err);
+                console.log('POST [실패] Notice 체크 실패 에러 : ' + err);
             } else {
-                console.log('GET [성공] Notice 체크 완료 게시글 ID: ' + notice.boardId);
+                console.log('POST [성공] Notice 체크 완료 게시글 ID: ' + notice.boardId);
                 notice.check == true; //체크했다고 표시
                 notice.save(function (err) { // 체크여부 저장
                     if (err) throw err;
                     else
-                        console.log('GET [성공] 체크완료 : ' + notice.check);
+                        console.log('POST [성공] 체크완료 : ' + notice.check);
                 });
                 res.format({
                     json: function () {
