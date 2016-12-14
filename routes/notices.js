@@ -19,15 +19,32 @@ route.route('/list/:me')
         });
     })
 
-route.route('/check/:boardId')
+route.route('/check/:id')
+    //웹 테스트용
+    .get(function (req, res) {
+        var notice_id = req.params.id;
+        console.log(notice_id);
+
+        mongoose.model('Notice').findById(notice_id, function (err, notice) {
+            notice.check = true;
+
+            notice.save(function (err) {
+                if (err) {
+                    console.log('GET [실패] Notice 체크 실패 에러 : ' + err);
+                } else {
+                    res.json({response: "ok"});
+                    console.log('GET [성공] Notice Check 성공');
+                }
+            });
+        })
+    })
     //안드로이드용
     .post(function (req, res) {
-        var board_id = req.params.boardId;
-        var type = req.query.type;
-        console.log(board_id);
+        var notice_id = req.params.id;
+        console.log(notice_id);
 
 
-        mongoose.model('Notice').findOne({$and: [{boardId: board_id}, {type: type}]}, function (err, notice) {
+        mongoose.model('Notice').findById(notice_id, function (err, notice) {
             notice.check = true;
 
             notice.save(function (err) {
