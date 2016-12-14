@@ -259,6 +259,31 @@ route.route('/unlike/:id')
         })
     });
 
+//신고 hate
+route.route('/hate/:id')
+    .post(function (req, res) {
+        var board_id = req.params.id;
+        mongoose.model('Board').findById(board_id, function (err, board) {
+            if (err) {
+                console.log('POST [실패] "신고" 게시글 찾기 실패 에러 : ' + err);
+            } else {
+                console.log('POST [성공] "신고"한 게시글 ID: ' + board._id);
+                board.meta.hate += 1; //신고수 +1
+                board.save(function (err) { // 변화된 신고수 저장
+                    if (err) throw err;
+                    else {
+                        if(board.meta.hate==5)
+                            res.redirect('http://52.78.207.133:3000/boards/delete/' + board_id);
+                        else {
+                            res.json({response: "ok"});
+                            console.log('POST [성공] HATE 업데이트. 현재 신고수 : ' + board.meta.hate);
+                        }
+                    }
+                });
+            }
+        })
+    });
+
 
 // UPDATE
 route.route('/update/:id')
