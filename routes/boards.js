@@ -272,8 +272,10 @@ route.route('/hate/:id')
                 board.save(function (err) { // 변화된 신고수 저장
                     if (err) throw err;
                     else {
-                        if(board.meta.hate==5)
+                        if(board.meta.hate==20) {
                             res.redirect('http://52.78.207.133:3000/boards/delete/' + board_id);
+                            console.log('POST[성공] 신고수 20회! DELETE로 REDIRECT 완료');
+                        }
                         else {
                             res.json({response: "ok"});
                             console.log('POST [성공] HATE 업데이트. 현재 신고수 : ' + board.meta.hate);
