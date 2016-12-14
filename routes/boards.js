@@ -17,6 +17,7 @@ route.route('/new')
         //  var body = req.body.body;
         //  var tagArr = req.body.tag.split(' ');
 
+        //안드로이드용
         var category = req.query.category;
         var author = req.query.author;
         var title = req.query.title;

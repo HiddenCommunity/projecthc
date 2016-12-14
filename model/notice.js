@@ -6,7 +6,8 @@ var noticeSchema = new Schema({
     boardAuthor : String,
     actionAuthor : String,
     type : String,
-    check : { type: Boolean, default: false }
+    check : { type: Boolean, default: false },
+    date: {type: Date, default: Date.now}
 });
 
 module.exports = mongoose.model('Notice', noticeSchema);
