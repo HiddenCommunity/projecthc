@@ -43,3 +43,5 @@ route.route('/check/:boardId')
             }
         })
     })
+
+module.exports = route;

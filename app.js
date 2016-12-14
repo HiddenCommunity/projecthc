@@ -47,6 +47,8 @@ app.use('/members', members);  // '/members' 경로로 들어오는 모든 접�
 app.use('/boards', boards);
 app.use('/emails', emails);
 app.use('/messages', messages);
+app.use('/notices', notices);
+
 
 // catch 404 and forward to error handler
 // 마운트 경로가 없는 미들웨어함수. 앱이 요청을 받을 때마다 실행된다.
