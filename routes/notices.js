@@ -23,19 +23,24 @@ route.route('/check/:boardId')
     //안드로이드용
     .post(function (req, res) {
         var board_id = req.params.boardId;
+        var type = req.query.type;
         console.log(board_id);
 
-        mongoose.model('Notice').update({boardId: board_id}, {
-            check: true
-        }, function (err, notice) {
-            if (err) {
-                console.log('POST [실패] Notice 체크 실패 에러 : ' + err);
-            } else {
-                res.json({response: "ok"});
-                console.log('POST [성공] Notice Check 성공');
-            }
+
+        mongoose.model('Notice').findOne({$and: [{boardId: board_id}, {type: type}]}, function (err, notice) {
+            notice.check = true;
+
+            notice.save(function (err) {
+                if (err) {
+                    console.log('POST [실패] Notice 체크 실패 에러 : ' + err);
+                } else {
+                    res.json({response: "ok"});
+                    console.log('POST [성공] Notice Check 성공');
+                }
+            });
         })
     })
+
 
 
 module.exports = route;
