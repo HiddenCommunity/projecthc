@@ -25,18 +25,17 @@ route.route('/check/:boardId')
         var board_id = req.params.id;
         console.log(board_id);
 
-        mongoose.model('Board').find({boardId: board_id}).exec(function (err, notice) {
-            notice.update({
-                check: true
-            }, function (err, notice) {
-                if (err) {
-                    console.log('POST [실패] Notice 체크 실패 에러 : ' + err);
-                } else {
-                    res.json({response: "ok"});
-                    console.log('POST [성공] Notice Check 성공');
-                }
-            })
+        mongoose.model('Notice').update({boardId: board_id}, {
+            check: true
+        }, function (err, notice) {
+            if (err) {
+                console.log('POST [실패] Notice 체크 실패 에러 : ' + err);
+            } else {
+                res.json({response: "ok"});
+                console.log('POST [성공] Notice Check 성공');
+            }
         })
     })
+
 
 module.exports = route;
