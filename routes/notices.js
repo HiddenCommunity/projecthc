@@ -22,7 +22,7 @@ route.route('/list/:me')
 route.route('/check/:boardId')
     //안드로이드용
     .post(function (req, res) {
-        var board_id = req.params.id;
+        var board_id = req.params.boardId;
         console.log(board_id);
 
         mongoose.model('Notice').update({boardId: board_id}, {
