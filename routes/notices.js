@@ -24,23 +24,18 @@ route.route('/check/:boardId')
     .post(function (req, res) {
         var board_id = req.params.id;
         console.log(board_id);
-        mongoose.model('Notice').find({boardId:board_id}).exec(function (err, notice) {
-            if (err) {
-                console.log('POST [실패] Notice 체크 실패 에러 : ' + err);
-            } else {
-                console.log('POST [성공] Notice 체크 완료 게시글 ID: ' + notice.boardId);
-                notice.check == true; //체크했다고 표시
-                notice.save(function (err) { // 체크여부 저장
-                    if (err) throw err;
-                    else
-                        console.log('POST [성공] 체크완료 : ' + notice.check);
-                });
-                res.format({
-                    json: function () {
-                        res.json({response: "ok"});
-                    }
-                });
-            }
+
+        mongoose.model('Board').find({boardId: board_id}).exec(function (err, notice) {
+            notice.update({
+                check: true
+            }, function (err, notice) {
+                if (err) {
+                    console.log('POST [실패] Notice 체크 실패 에러 : ' + err);
+                } else {
+                    res.json({response: "ok"});
+                    console.log('POST [성공] Notice Check 성공');
+                }
+            })
         })
     })
 
