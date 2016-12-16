@@ -2,7 +2,7 @@ var express = require('express'),
     route = express.Router(),
     mongoose = require('mongoose'),
     nodeMailer = require('nodemailer'),
-    mcrypt = require('js-rijndael');  //이메일 암호화
+    crypto = require('crypto');;  //이메일 암호화
 
 
 //메일보내기 "테스트용/실제용 코드다르니까 확인할것!"
@@ -32,9 +32,10 @@ route.post('/send/:email',function(req, res){
 
 //인증메일에서 버튼클릭하면 이쪽으로 온다.
 route.get('/confirm/:email', function(req,res) {
+    //db암호화
     var hmac = crypto.createHmac('sha1', 'hiddenCommunity');
     hmac.setEncoding('hex');
-    hmac.write(req.query.email);
+    hmac.write(req.params.email);
     hmac.end();
     var email = hmac.read();
 
