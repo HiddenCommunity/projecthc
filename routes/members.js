@@ -51,23 +51,12 @@ route.post('/checkNickname/:nickname', function(req, res) {
     //find the nickname in the db
     mongoose.model('Member').findOne({'nickname': nickname }, function (err, member) {
         if (err) {
-            //return console.error(err);
-            console.log('사용 가능한 닉네임입니다.');
+            console.log(nickname + '이 DB에 없음');
             res.json({response:"ok"});
         } else {
-            //console.log('typeof member.nickname : ' + typeof member.nickname);
-            //console.log('typeof nickname : '+ typeof nickname);
-            //console.log('member : '+member);
-            //if(member == null){
-            //    console.log('사용 가능한 닉네임입니다.');
-            //    res.json({response:"ok"});
-            //}else{
-                console.log('이미 존재하는 닉네임입니다.');
-                res.json({response:"no"});
-            }
-
-
-        //}
+            console.log(member);
+            res.json({response:"no"});
+        }
     });
 });
 
