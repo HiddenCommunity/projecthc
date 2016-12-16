@@ -43,19 +43,53 @@ route.use(cookieParser());
 //    res.render('members/new', { title: 'Hidden Community !' });
 // });
 
+//nickname 중복검사
+route.post('/checkNickname', function(req, res) {
+    console.log('validating ' + nickname + ' exists');
+    var email = req.query.email;
+    var password = req.query.password;
+    var nickname = req.query.nickname;
+    var major1 = req.query.major1;
+    var major2 = req.query.major2;
+    var major3 = req.query.major3;
+    var url = 'http://52.78.207.133:3000/boards/addInfo/'+email+'/'+password+'/'+major1;
+
+    if(major2 != null)
+        url += '/'+major2;
+
+    if(major3 != null)
+        url += '/'+major3;
+
+    //find the nickname in the db
+    mongoose.model('Member').findOne({'nickname': nickname }, function (err, member) {
+        if (err) {  //해당하는 nickname이 없을 때,
+            res.redirect(url);  //addInfo 로 넘김.
+        } else { //해당하는 nickname이 있을 때,
+            console.log('이미 존재하는 닉네임입니다.');
+            res.json({response:"no"});
+        }
+    });
+});
+
 //안드로이드에서 아이디, 패스워드 입력.
 route.route('/addInfo')
-    .get(function (req, res){  //테스트용 코드
-        res.render('members/edit', { title: '안드로이드에서 사용자 정보 입력하는 화면' });
-    })
-    .post(function (req,res){
-        //  /addInfo/?email=" "
+    // .get(function (req, res){  //웹테스트용 코드
+    //     res.render('members/edit', { title: '안드로이드에서 사용자 정보 입력하는 화면' });
+    // })
+    .get(function (req,res){
         var email = req.query.email;
         var password = req.query.password;
         var nickname = req.query.nickname;
         var major1 = req.query.major1;
         var major2 = req.query.major2;
         var major3 = req.query.major3;
+        var query = {nickname:nickname, password:password, major1:major1};
+
+        if(major2!=null)
+            query = {nickname:nickname, password:password, major1:major1, major2:major2};
+        if(major3!=null)
+            query = {nickname:nickname, password:password, major1:major1, major2:major2, major3:major3};
+
         //테스트용
         // var email = req.body.email;
         // var nickname = req.body.nickname;
@@ -69,13 +103,7 @@ route.route('/addInfo')
             id = member._id;
             console.log('member_id : ' + id);
             //update it
-            member.update({
-                nickname : nickname,
-                password : password,
-                major1 : major1,
-                major2 : major2,
-                major3 : major3
-            }, function (err, member) {  //원래 성공했을 때는 처리해야함.
+            member.update(query, function (err, member) {  //원래 성공했을 때는 처리해야함.
                 if (err) {
                     res.send("[실패] db에 update 실패 !: " + err);
                 }
@@ -91,36 +119,36 @@ route.route('/addInfo')
         })
     });
 
-// route middleware :nickname 검증  - 닉네임으로 사용자 식별하기 위해서
-// 이때 id를 설정해서 다음에도 계속 쓴다. 내 정보 보기, 닉네임 수정 용도
-route.param('nickname', function(req, res, next, nickname) {
-    console.log('validating ' + nickname + ' exists');
-    //find the ID in the Database
-    mongoose.model('Member').findOne({'nickname': nickname }, function (err, member) {
-        //해당하는 nickname이 없을 때,
-        if (err) {
-            console.log(id + ' was not found');
-            res.status(404);
-            var err = new Error('Not Found');
-            err.status = 404;
-            res.format({
-                html: function(){
-                    next(err);
-                },
-                json: function(){
-                    res.json({message : err.status  + ' ' + err});
-                }
-            });
-            //해당 닉네임인 유저를 찾으면 계속
-        } else {
-            console.log(member);
-            // once validation is done save the new item in the req
-             //db의 _id로 사용자를 찾기 위해서.
-            // go to the next thing
-            next();  //다음 라우트로
-        }
-    });
-});
+// // route middleware :nickname 검증  - 닉네임으로 사용자 식별하기 위해서
+// // 이때 id를 설정해서 다음에도 계속 쓴다. 내 정보 보기, 닉네임 수정 용도
+// route.param('nickname', function(req, res, next, nickname) {
+//     console.log('validating ' + nickname + ' exists');
+//     //find the ID in the Database
+//     mongoose.model('Member').findOne({'nickname': nickname }, function (err, member) {
+//         //해당하는 nickname이 없을 때,
+//         if (err) {
+//             console.log(id + ' was not found');
+//             res.status(404);
+//             var err = new Error('Not Found');
+//             err.status = 404;
+//             res.format({
+//                 html: function(){
+//                     next(err);
+//                 },
+//                 json: function(){
+//                     res.json({message : err.status  + ' ' + err});
+//                 }
+//             });
+//             //해당 닉네임인 유저를 찾으면 계속
+//         } else {
+//             console.log(member);
+//             // once validation is done save the new item in the req
+//              //db의 _id로 사용자를 찾기 위해서.
+//             // go to the next thing
+//             next();  //다음 라우트로
+//         }
+//     });
+// });
 
 //닉네임변경할 때 다시 주석지우기
 // route.route('/:nickname')
