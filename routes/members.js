@@ -1,6 +1,7 @@
 var express = require('express'),
     route = express.Router(),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    crypto = require('crypto');
 //    cookieParser = require('cookie-parser'),
 //    session = require('express-session');
     // MongoDBStore = require('connect-mongodb-session')(session),
@@ -71,7 +72,12 @@ route.route('/addInfo')
     //     res.render('members/edit', { title: '안드로이드에서 사용자 정보 입력하는 화면' });
     // })
     .post(function (req,res){
-        var email = req.query.email;
+        //이메일 암호화
+        var hmac = crypto.createHmac('sha1', 'hiddenCommunity');
+        hmac.setEncoding('hex');
+        hmac.write(req.query.email);
+        hmac.end();
+        var email = hmac.read();
         var password = req.query.password;
         var nickname = req.query.nickname;
         var major1 = req.query.major1;

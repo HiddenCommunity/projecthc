@@ -16,7 +16,7 @@ route.post('/send/:email',function(req, res){
         from: '"HiddenCommunity" <hc@hiddencommunity.com>', // sender address
         to: email, // list of receivers
         subject: 'Hidden Community 가입 인증메일 ', // Subject line
-        html:'<p><img src="http://i.imgur.com/xhasOE5.png"/></p><h1>HiddenCommunity 가입 인증 메일입니다.</h1><h4>안녕하세요.</h4><h4>Hidden Community 서비스에 가입해주셔서 감사합니다.</h4><h4>아래 링크를 클릭하여 Hidden Community 서비스의 가입 인증을 완료해주세요.</h4><p><a href="http://52.78.207.133:3000/emails/confirm/?email='+ email +'"><img src="http://i.imgur.com/k698ooP.png" width="200", height="66"/></a></p></p>'
+        html:'<p><img src="http://i.imgur.com/xhasOE5.png"/></p><h1>HiddenCommunity 가입 인증 메일입니다.</h1><h4>안녕하세요.</h4><h4>Hidden Community 서비스에 가입해주셔서 감사합니다.</h4><h4>아래 링크를 클릭하여 Hidden Community 서비스의 가입 인증을 완료해주세요.</h4><p><a href="http://52.78.207.133:3000/emails/confirm/'+ email+'"><img src="http://i.imgur.com/k698ooP.png" width="200", height="66"/></a></p></p>'
     };
 
     // send mail with defined transport object
@@ -31,8 +31,13 @@ route.post('/send/:email',function(req, res){
 });
 
 //인증메일에서 버튼클릭하면 이쪽으로 온다.
-route.get('/confirm', function(req,res) {
-    var email = req.param('email');
+route.get('/confirm/:email', function(req,res) {
+    var hmac = crypto.createHmac('sha1', 'hiddenCommunity');
+    hmac.setEncoding('hex');
+    hmac.write(req.query.email);
+    hmac.end();
+    var email = hmac.read();
+
     console.log(email);
     //--------------------------------------암호화하기추가해야함!
     //디비에 인증된 이메일 등록
@@ -53,7 +58,11 @@ route.get('/confirm', function(req,res) {
 //이메일 인증 완료 후, 안드로이드에서 '인증완료'버튼을 눌렀을 때. db 에서 인증한 이메일이 있는지 체크
 //테스트 : get
 route.post('/validate/:email', function(req,res) {
-    var email = req.params.email;
+    var hmac = crypto.createHmac('sha1', 'hiddenCommunity');
+    hmac.setEncoding('hex');
+    hmac.write(req.query.email);
+    hmac.end();
+    var email = hmac.read();
     console.log(email);
     //DB에 해당 이메일이 들어있나 체크.
     mongoose.model('Member').findOne({'email': email }, function (err, member) {
