@@ -45,25 +45,14 @@ route.use(cookieParser());
 
 //nickname 중복검사
 route.post('/checkNickname', function(req, res) {
-    console.log('validating ' + nickname + ' exists');
-    var email = req.query.email;
-    var password = req.query.password;
     var nickname = req.query.nickname;
-    var major1 = req.query.major1;
-    var major2 = req.query.major2;
-    var major3 = req.query.major3;
-    var url = 'http://52.78.207.133:3000/boards/addInfo/'+email+'/'+password+'/'+major1;
-
-    if(major2 != null)
-        url += '/'+major2;
-
-    if(major3 != null)
-        url += '/'+major3;
+    console.log('닉네임 중복 체크중....' + nickname );
 
     //find the nickname in the db
     mongoose.model('Member').findOne({'nickname': nickname }, function (err, member) {
         if (err) {  //해당하는 nickname이 없을 때,
-            res.redirect(url);  //addInfo 로 넘김.
+            console.log('사용 가능한 닉네임 입니다.')
+            res.json({response:"ok"});
         } else { //해당하는 nickname이 있을 때,
             console.log('이미 존재하는 닉네임입니다.');
             res.json({response:"no"});
@@ -76,7 +65,7 @@ route.route('/addInfo')
     // .get(function (req, res){  //웹테스트용 코드
     //     res.render('members/edit', { title: '안드로이드에서 사용자 정보 입력하는 화면' });
     // })
-    .get(function (req,res){
+    .post(function (req,res){
         var email = req.query.email;
         var password = req.query.password;
         var nickname = req.query.nickname;
@@ -85,10 +74,14 @@ route.route('/addInfo')
         var major3 = req.query.major3;
         var query = {nickname:nickname, password:password, major1:major1};
 
-        if(major2!=null)
+        if(major2!=null){
             query = {nickname:nickname, password:password, major1:major1, major2:major2};
-        if(major3!=null)
-            query = {nickname:nickname, password:password, major1:major1, major2:major2, major3:major3};
+            console.log('major2가 추가된 쿼리');
+        }
+        if(major3!=null) {
+            query = {nickname: nickname, password: password, major1: major1, major2: major2, major3: major3};
+            console.log('major3가 추가된 쿼리');
+        }
 
         //테스트용
         // var email = req.body.email;
