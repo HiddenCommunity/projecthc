@@ -49,12 +49,12 @@ route.post('/checkNickname/:nickname', function(req, res) {
     console.log('닉네임 중복 체크중....' + nickname );
 
     //find the nickname in the db
-    mongoose.model('Member').find({'nickname': nickname}).exec(function (err, member) {
+    mongoose.model('Member').findOne({'nickname': nickname }, function (err, member) {
         if (err) {
             return console.error(err);
         } else {
-            console.log('member.nickname : ' + member.nickname);
-            console.log('nickname : '+ nickname);
+            console.log('typeof member.nickname : ' + typeof member.nickname);
+            console.log('typeof nickname : '+ typeof nickname);
             console.log('member : '+member);
             if(member.nickname == undefined){
                 console.log('사용 가능한 닉네임입니다.');
