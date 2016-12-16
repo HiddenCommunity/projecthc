@@ -49,12 +49,13 @@ route.post('/checkNickname/:nickname', function(req, res) {
     console.log('닉네임 중복 체크중....' + nickname );
 
     //find the nickname in the db
-    mongoose.model('Member').findOne({'nickname': nickname }, function (err, member) {
+    mongoose.model('Member').find({'nickname': nickname }).exec(function (err, member) {
         if (err) {  //해당하는 nickname이 없을 때,
             console.log('사용 가능한 닉네임입니다.');
             res.json({response:"ok"});
+            console.log(member);
         } else { //해당하는 nickname이 있을 때,
-            console.log('이미 존재하는 닉네임입니다.' + member.nickname);
+            console.log('이미 존재하는 닉네임입니다.');
             res.json({response:"no"});
         }
     });
