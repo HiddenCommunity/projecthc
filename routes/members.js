@@ -1,8 +1,8 @@
 var express = require('express'),
     route = express.Router(),
-    mongoose = require('mongoose'),
-    cookieParser = require('cookie-parser'),
-    session = require('express-session');
+    mongoose = require('mongoose');
+//    cookieParser = require('cookie-parser'),
+//    session = require('express-session');
     // MongoDBStore = require('connect-mongodb-session')(session),
     // store = new MongoDBStore(
     //     {
@@ -11,7 +11,7 @@ var express = require('express'),
     //     }
     // );
 
-route.use(cookieParser());
+//route.use(cookieParser());
 // route.use(session({
 //     secret : '@345a!d^f$h%a12&*#%',  // 암호화 키
 //     cookie: {
@@ -51,10 +51,10 @@ route.post('/checkNickname/:nickname', function(req, res) {
     //find the nickname in the db
     mongoose.model('Member').findOne({'nickname': nickname }, function (err, member) {
         if (err) {  //해당하는 nickname이 없을 때,
-            console.log('사용 가능한 닉네임 입니다.')
+            console.log('사용 가능한 닉네임입니다.');
             res.json({response:"ok"});
         } else { //해당하는 nickname이 있을 때,
-            console.log('이미 존재하는 닉네임입니다.');
+            console.log('이미 존재하는 닉네임입니다.' + member.nickname);
             res.json({response:"no"});
         }
     });
