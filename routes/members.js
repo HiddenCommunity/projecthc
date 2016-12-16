@@ -56,13 +56,14 @@ route.post('/checkNickname/:nickname', function(req, res) {
             console.log('member.nickname : ' + member.nickname);
             console.log('nickname : '+ nickname);
             console.log('member : '+member);
-            if(member.nickname == nickname){
-                console.log('이미 존재하는 닉네임입니다.');
-                res.json({response:"no"});
-            }else{
+            if(member.nickname == undefined){
                 console.log('사용 가능한 닉네임입니다.');
                 res.json({response:"ok"});
+            }else{
+                console.log('이미 존재하는 닉네임입니다.');
+                res.json({response:"no"});
             }
+
 
         }
     });
