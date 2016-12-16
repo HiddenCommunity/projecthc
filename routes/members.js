@@ -44,8 +44,8 @@ route.use(cookieParser());
 // });
 
 //nickname 중복검사
-route.post('/checkNickname', function(req, res) {
-    var nickname = req.query.nickname;
+route.post('/checkNickname/:nickname', function(req, res) {
+    var nickname = req.params.nickname;
     console.log('닉네임 중복 체크중....' + nickname );
 
     //find the nickname in the db
