@@ -82,14 +82,17 @@ route.route('/addInfo')
         var nickname = req.query.nickname;
         var major1 = req.query.major1;
         var major2 = req.query.major2;
+        console.log('major2 : '+ major2);
         var major3 = req.query.major3;
+        console.log('major3 : '+ major3);
+
         var query = {nickname:nickname, password:password, major1:major1};
 
-        if(major2!=null){
+        if(major2!=''){
             query = {nickname:nickname, password:password, major1:major1, major2:major2};
             console.log('major2가 추가된 쿼리');
         }
-        if(major3!=null) {
+        if(major3!='') {
             query = {nickname: nickname, password: password, major1: major1, major2: major2, major3: major3};
             console.log('major3가 추가된 쿼리');
         }
