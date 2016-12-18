@@ -61,7 +61,7 @@ route.get('/confirm/:email', function(req,res) {
 route.post('/validate/:email', function(req,res) {
     var hmac = crypto.createHmac('sha1', 'hiddenCommunity');
     hmac.setEncoding('hex');
-    hmac.write(req.query.email);
+    hmac.write(req.params.email);
     hmac.end();
     var email = hmac.read();
     console.log(email);
