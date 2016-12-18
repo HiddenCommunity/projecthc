@@ -16,7 +16,7 @@ var boardSchema = new Schema({
     comment: [{
         author: String,
         body: String,
-        date: { type: Date, default: Date.now }
+        date: { type: Date, default: Date.now  }
     }]
 });
 

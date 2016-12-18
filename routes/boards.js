@@ -11,18 +11,18 @@ route.route('/new')
     })
     .post(function (req, res) {
         //웹테스트용
-        //  var category = req.body.major;
-        //  var author = req.body.author;
-        //  var title = req.body.title;
-        //  var body = req.body.body;
-        //  var tagArr = req.body.tag.split(' ');
+         var category = req.body.major;
+         var author = req.body.author;
+         var title = req.body.title;
+         var body = req.body.body;
+         var tagArr = req.body.tag.split(' ');
 
         //안드로이드용
-        var category = req.query.category;
-        var author = req.query.author;
-        var title = req.query.title;
-        var body = req.query.body;
-        var tagArr = req.query.tag.split(' ');
+        // var category = req.query.category;
+        // var author = req.query.author;
+        // var title = req.query.title;
+        // var body = req.query.body;
+        // var tagArr = req.query.tag.split(' ');
         console.log(tagArr);
 
         mongoose.model('Board').create({
@@ -98,14 +98,15 @@ route.route('/read/:id')
                 });
                 res.format({
                     //웹 테스트용
-                    // html: function(){
-                    //     res.render('boards/show', {title: board.title,"board": board});
-                    // },
-
-                    json: function () {
-                        res.json({board: board});
-                        console.log(board);
+                    html: function(){
+                        res.render('boards/show', {title: board.title,"board": board});
                     }
+                    // ,
+                    //
+                    // json: function () {
+                    //     res.json({board: board});
+                    //     console.log(board);
+                    // }
                 });
             }
         })
@@ -138,7 +139,7 @@ route.route('/read/:id')
 //웹테스트용 POST
 // 안드로이드 GET
 route.route('/comment/:id')
-    //안드로이드
+    //안드로이드 get
     .get(function (req, res) {
         var board_id = req.params.id;
         var author = req.query.author;
@@ -195,6 +196,9 @@ route.route('/comment/:id')
                         } else { //알림 목록 추가 성공
                             console.log('POST [성공] Notice 작성 성공 ' + notice._id);
                             res.redirect('http://localhost:3000/boards/read/' + board_id);
+
+                            //준희용
+                            //res.redirect('http://52.78.207.133:3000/boards/read/' + board_id);
                         }
                     });
                     console.log('POST [성공] 댓글 달기 후 읽기 화면 요청');
