@@ -6,12 +6,10 @@ var memberSchema = new Schema({
     //nickname: {type : String, unique : true},
     email: String,
     nickname: String,
-    password : String,
     major1 : String,
     major2 : String,
     major3 : String,
     join_date: { type: Date, default: Date.now }
-    //last_login_date: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Member', memberSchema);
