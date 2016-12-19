@@ -78,7 +78,6 @@ route.route('/addInfo')
         hmac.write(req.query.email);
         hmac.end();
         var email = hmac.read();
-        var password = req.query.password;
         var nickname = req.query.nickname;
         var major1 = req.query.major1;
         var major2 = req.query.major2;
@@ -86,14 +85,14 @@ route.route('/addInfo')
         var major3 = req.query.major3;
         console.log('major3 : '+ major3);
 
-        var query = {nickname:nickname, password:password, major1:major1};
+        var query = {nickname:nickname, major1:major1};
 
         if(major2!=''){
-            query = {nickname:nickname, password:password, major1:major1, major2:major2};
+            query = {nickname:nickname, major1:major1, major2:major2};
             console.log('major2가 추가된 쿼리');
         }
         if(major3!='') {
-            query = {nickname: nickname, password: password, major1: major1, major2: major2, major3: major3};
+            query = {nickname: nickname, major1: major1, major2: major2, major3: major3};
             console.log('major3가 추가된 쿼리');
         }
 
