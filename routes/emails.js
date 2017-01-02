@@ -10,7 +10,7 @@ route.post('/send/:email',function(req, res){
     var email = req.params.email;
     console.log(email);
     // create reusable transporter object using the default SMTP transport
-    var transporter = nodeMailer.createTransport({ service: 'Gmail', auth: { user: 'carsilverstar@gmail.com', pass: 'a298870a' } });
+    var transporter = nodeMailer.createTransport({ service: 'Gmail', auth: { user: '@gmail.com', pass: '' } });
     // setup e-mail data with unicode symbols
     var mailOptions = {
         from: '"HiddenCommunity" <hc@hiddencommunity.com>', // sender address
